@@ -1,0 +1,255 @@
+---
+title: "Final Project Markdown"
+author: "Silveyra"
+date: "April 30, 2016"
+output: html_document
+---
+
+# Differential Expression Analysis of microRNA PCR arrays
+
+1- Installing and loading required packages.
+```{r installing required packages}
+setwd("~/Dropbox/project")
+require(hexbin)
+require(limma)
+require(HTqPCR)
+```
+
+```{r download experiment data - CT values}
+CTvalues=read.csv("ctvaluesnoh.csv")
+pheno=read.csv("phenomatrix.csv")
+samplenames=c(pheno$Patient.ID)
+expwithmiRNAid=read.csv("ctvalues.csv")
+miRNAlist=expwithmiRNAid[,1]
+miRNAlist=data.matrix(miRNAlist)
+```
+
+```{r create matrices and insert sample names}
+CTvaluesM=data.matrix(CTvalues)
+colnames(CTvaluesM)=samplenames
+```
+
+```{r summary and plots of Ct raw data}
+boxplot(CTvaluesM)
+summary(CTvaluesM)
+plotCtHeatmap(CTvaluesM, gene.names = miRNAlist, sample.names = pheno$Abrev, dist = "pearson", "Pearson CT nonnorm")
+plotCtHeatmap(CTvaluesM, gene.names = miRNAlist, sample.names = pheno$Abrev, dist = "euclidean", "Euclidean CT nonnorm")
+```
+
+```{r Comparison of Ct values across groups}
+C=c(15,16,23,24,26,29)
+pheno$Abrev[C]
+boxplot(CTvaluesM[,C], main = "Control CT values")
+
+M=c(5,8,14,19,21)
+pheno$Abrev[M]
+boxplot(CTvaluesM[,M], main = "mild/moderate BPD CT values")
+
+S=c(2,3,4,9,10,11,12,13,17,18,20,27,28,30)
+pheno$Abrev[S]
+boxplot(CTvaluesM[,S], main = "Severe BPD CT values")
+
+BPH=c(1,6,7,22,25)
+pheno$Abrev[BPH]
+boxplot(CTvaluesM[,BPH], main = "BPD+PHT CT values")
+
+plot(hexplom(CTvaluesM[,C]), main = "Control CT values")
+plot(hexplom(CTvaluesM[,M]), main = "mild/moderate CT values")
+plot(hexplom(CTvaluesM[,S]), main = "severe BPD CT values")
+plot(hexplom(CTvaluesM[,BPH]), main = "BPD+PHT CT values")
+```
+
+```{r loess normalization of Ct values}
+loessct=normalizeCyclicLoess(CTvaluesM, method = "fast", span = 0.3, iterations = "30")
+```
+
+```{r visualization of normalized Ct values}
+summary(loessct)
+boxplot(loessct)
+boxplot(loessct[,C], main = "Control CT values")
+boxplot(loessct[,M], main = "mild/moderate CT values")
+boxplot(loessct[,S], main = "severe CT values")
+boxplot(loessct[,BPH], main = "BPD+PH CT values")
+
+plotCtHeatmap(loessct, gene.names = miRNAlist, sample.names = pheno$Abrev, dist = "pearson", main = "Pearson CT loess")
+plotCtHeatmap(loessct, gene.names = miRNAlist, sample.names = pheno$Abrev, dist = "euclidean", main = "euclidean CT loess")
+
+plot(hexplom(loessct[,C]), main = "Control CT values")
+plot(hexplom(loessct[,M]), main = "mild/moderate CT values")
+plot(hexplom(loessct[,S]), main = "severe BPD CT values")
+plot(hexplom(loessct[,BPH]), main = "BPD+PHT CT values")
+```
+
+```{r export normalized data to analyze on excel}
+write.csv(loessct, "loessct.csv")
+```
+
+```{r retrieve data analyzed with Livak method}
+Expvalues=read.csv("mirexpressionnoh.csv")
+ExpvaluesM=data.matrix(Expvalues)
+colnames(ExpvaluesM)=samplenames
+miRNAlist2=read.csv("mirexpression.csv")
+miRNAlist2=miRNAlist2[,1]
+summary(ExpvaluesM)
+```
+
+```{r visualize expression data}
+boxplot(ExpvaluesM)
+boxplot(ExpvaluesM[,C], main = "Control RQ expression")
+boxplot(ExpvaluesM[,M], main = "mild/moderate RQ expression")
+boxplot(ExpvaluesM[,S], main = "severe RQ expression")
+boxplot(ExpvaluesM[,BPH], main = "BPD+PH RQ expression")
+```
+
+```{r visualize expression log data}
+ExpvaluesL=log10(ExpvaluesM+0.5)
+boxplot(ExpvaluesL)
+boxplot(ExpvaluesL[,C], main = "Control log expression")
+boxplot(ExpvaluesL[,M], main = "mild/moderate log expression")
+boxplot(ExpvaluesL[,S], main = "severe log expression")
+boxplot(ExpvaluesL[,BPH], main = "BPD+PH log expression")
+```
+
+```{r design matries for contrasts}
+designBPD=model.matrix(~0 + pheno$Abrev)
+designILD=model.matrix(~0 + pheno$CD)
+colnames(designBPD)=c("Control", "mildBPD", "severeBPD", "BPDPH")
+colnames(designILD)=c("Control", "ILD")
+rownames(designBPD)=pheno$Patient.ID
+rownames(designILD)=pheno$Patient.ID
+print(designBPD)
+print(designILD)
+```
+
+```{r fir cell means}
+fitBPD=lmFit(ExpvaluesM,designBPD)
+fitILD=lmFit(ExpvaluesM,designILD)
+
+fitBPD_log=lmFit(ExpvaluesL,designBPD)
+fitILD_log=lmFit(ExpvaluesL,designILD)
+```
+
+```{r contrasts}
+contrastsBPD=makeContrasts(CvM=Control-mildBPD, CvS=Control-severeBPD, CvPH=Control-BPDPH, SvPH=BPDPH-severeBPD, levels=designBPD)
+print(contrastsBPD)
+
+contrastsILD=makeContrasts(CvILD=Control-ILD, levels = designILD)
+print(contrastsILD)
+```
+
+```{r fit cell means with contrasts}
+fitBPDcontrast=contrasts.fit(fitBPD,contrastsBPD)
+fitBPDcontrast=eBayes(fitBPDcontrast)
+
+fitILDcontrast=contrasts.fit(fitILD,contrastsILD)
+fitILDcontrast=eBayes(fitILDcontrast)
+
+fitBPDcontrast_log=contrasts.fit(fitBPD_log,contrastsBPD)
+fitBPDcontrast_log=eBayes(fitBPDcontrast_log)
+
+fitILDcontrast_log=contrasts.fit(fitILD_log,contrastsILD)
+fitILDcontrast_log=eBayes(fitILDcontrast_log)
+```
+
+```{r retrieve lists of top differentially expressed miRNAs from RQ data}
+CvM=topTable(fitBPDcontrast, coef = "CvM", adjust.method = "BH", n = 10, p.value = 1, genelist = miRNAlist2)
+CvS=topTable(fitBPDcontrast, coef = "CvS", adjust.method = "BH", n = 10, p.value = 1, genelist = miRNAlist2)
+CvPH=topTable(fitBPDcontrast, coef = "CvPH", adjust.method = "BH", n = 10, p.value = 1, genelist = miRNAlist2)
+SvPH=topTable(fitBPDcontrast, coef = "SvPH", adjust.method = "BH", n = 10, p.value = 1, genelist = miRNAlist2)
+
+CvILD=topTable(fitILDcontrast, coef = "CvILD", adjust.method = "BH", n = 10, p.value = 1, genelist = miRNAlist2)
+```
+
+```{r retrieve lists of top differentially expressed miRNAs from log data}
+logCvM=topTable(fitBPDcontrast_log, coef = "CvM", adjust.method = "BH", n = 10, p.value = 1, genelist = miRNAlist2)
+logCvS=topTable(fitBPDcontrast_log, coef = "CvS", adjust.method = "BH", n = 10, p.value = 1, genelist = miRNAlist2)
+logCvPH=topTable(fitBPDcontrast_log, coef = "CvPH", adjust.method = "BH", n = 10, p.value = 1, genelist = miRNAlist2)
+logSvPH=topTable(fitBPDcontrast_log, coef = "SvPH", adjust.method = "BH", n = 10, p.value = 1, genelist = miRNAlist2)
+
+logCvILD=topTable(fitILDcontrast_log, coef = "CvILD", adjust.method = "BH", n = 10, p.value = 1, genelist = miRNAlist2)
+```
+
+```{r compare tables}
+CvM
+logCvM
+
+CvS
+logCvS
+
+CvPH
+logCvPH
+
+SvPH
+logSvPH
+
+CvILD
+logCvILD
+
+```
+
+
+```{r top 3 DE control vs. ILD RQ and logRQ}
+boxplot(ExpvaluesM[374,] ~ pheno$CD, main = miRNAlist2[374], ylab = "expression")
+boxplot(ExpvaluesM[41,] ~ pheno$CD, main = miRNAlist2[41], ylab = "expression")
+boxplot(ExpvaluesM[282,] ~ pheno$CD, main = miRNAlist2[282], ylab = "expression")
+
+boxplot(ExpvaluesL[748,] ~ pheno$CD, main = miRNAlist2[748], ylab = "log expression")
+boxplot(ExpvaluesL[375,] ~ pheno$CD, main = miRNAlist2[375], ylab = "log expression")
+boxplot(ExpvaluesL[749,] ~ pheno$CD, main = miRNAlist2[749], ylab = "log expression")
+```
+
+Boxplot of top 3 DE miRNAs between control / severe BPD
+
+```{r top 3 DE control vs. severe BPD RQ and logRQ}
+boxplot(ExpvaluesM[852,] ~ pheno$Abrev, main = miRNAlist2[852], ylab = "expression")
+boxplot(ExpvaluesM[374,] ~ pheno$Abrev, main = miRNAlist2[374], ylab = "expression")
+boxplot(ExpvaluesM[499,] ~ pheno$Abrev, main = miRNAlist2[499], ylab = "expression")
+
+
+boxplot(ExpvaluesL[375,] ~ pheno$Abrev, main = miRNAlist2[375], ylab = "log expression")
+boxplot(ExpvaluesL[748,] ~ pheno$Abrev, main = miRNAlist2[748], ylab = "log expression")
+boxplot(ExpvaluesL[749,] ~ pheno$Abrev, main = miRNAlist2[749], ylab = "log expression")
+```
+
+```{r top 3 DE control vs. BPD+PH RQ and logRQ}
+boxplot(ExpvaluesM[420,] ~ pheno$Abrev, main = miRNAlist2[420], ylab = "expression")
+boxplot(ExpvaluesM[521,] ~ pheno$Abrev, main = miRNAlist2[521], ylab = "expression")
+boxplot(ExpvaluesM[331,] ~ pheno$Abrev, main = miRNAlist2[331], ylab = "expression")
+
+boxplot(ExpvaluesL[420,] ~ pheno$Abrev, main = miRNAlist2[420], ylab = "log expression")
+boxplot(ExpvaluesL[521,] ~ pheno$Abrev, main = miRNAlist2[521], ylab = "log expression")
+boxplot(ExpvaluesL[405,] ~ pheno$Abrev, main = miRNAlist2[405], ylab = "log expression")
+```
+
+```{r top 3 DE severe BPD vs. BPD+PH RQ and logRQ}
+boxplot(ExpvaluesM[361,] ~ pheno$Abrev, main = miRNAlist2[361], ylab = "expression")
+boxplot(ExpvaluesM[151,] ~ pheno$Abrev, main = miRNAlist2[151], ylab = "expression")
+boxplot(ExpvaluesM[206,] ~ pheno$Abrev, main = miRNAlist2[206], ylab = "expression")
+
+boxplot(ExpvaluesL[151,] ~ pheno$Abrev, main = miRNAlist2[151], ylab = "log expression")
+boxplot(ExpvaluesL[853,] ~ pheno$Abrev, main = miRNAlist2[853], ylab = "log expression")
+boxplot(ExpvaluesL[94,] ~ pheno$Abrev, main = miRNAlist2[94], ylab = "log expression")
+```
+
+
+```{r heatmaps}
+orderBPD=order(fitBPDcontrast_log$F.p)
+fitBPDcontrast_log$F.p[orderBPD]
+geneMeanDEBPD=fitBPD$coef[orderBPD,]
+heatmap(geneMeanDEBPD,distfun=function(x) as.dist(1-(cor(t(x)))))
+```
+
+```{r}
+sessionInfo()
+print(gc())
+```
+
+
+
+
+
+
+
+
+
+
