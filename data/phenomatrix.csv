@@ -1,0 +1,31 @@
+Patient ID,Phenotype,Abrev,CD
+1,BPD+PHT,severe BPD+PH,ILD
+2,BPD - severe,severe BPD,ILD
+3,BPD - severe,severe BPD,ILD
+4,BPD - severe,severe BPD,ILD
+5,BPD - mild,mild BPD,ILD
+6,BPD+PHT,severe BPD+PH,ILD
+7,BPD+PHT,severe BPD+PH,ILD
+8,BPD - mild,mild BPD,ILD
+11,BPD - severe,severe BPD,ILD
+12,BPD - severe,severe BPD,ILD
+13,BPD - severe,severe BPD,ILD
+15,BPD - severe,severe BPD,ILD
+16,BPD - severe,severe BPD,ILD
+17,BPD - mild,mild BPD,ILD
+18,Control,control,C
+20,Control,control,C
+23,BPD - severe,severe BPD,ILD
+24,BPD - severe,severe BPD,ILD
+25,BPD - moderate,mild BPD,ILD
+26,BPD - severe,severe BPD,ILD
+27,BPD - moderate,mild BPD,ILD
+28,BPD+PHT,severe BPD+PH,ILD
+29,Control,control,C
+30,Control,control,C
+31,BPD+PHT,severe BPD+PH,ILD
+32,Control,control,C
+33,BPD - severe,severe BPD,ILD
+34,BPD - severe,severe BPD,ILD
+36,Control,control,C
+37,BPD - severe,severe BPD,ILD
