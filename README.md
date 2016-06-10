@@ -12,9 +12,12 @@
 #Lab members and contact information
 
 * Dr. Patricia Silveyra 
-    [Linkedin](https://www.linkedin.com/in/patriciasilveyra)
-    [Penn State Profile](https://profiles.psu.edu/profiles/display/112384)
-    [Women's Health Core](http://www.womenshealthcoe.psu.edu/bio_silveyra.html)
+
+     [Linkedin](https://www.linkedin.com/in/patriciasilveyra)
+    
+     [Penn State Profile](https://profiles.psu.edu/profiles/display/112384)
+    
+     [Women's Health Core](http://www.womenshealthcoe.psu.edu/bio_silveyra.html)
     
 * Susan DiAngelo
 
@@ -25,7 +28,9 @@
 #Our Collaborators
 
 * Dr. Zissis Chroneos
-   [Linkedin](https://www.linkedin.com/in/zissis-chroneos-7783898)
+   
+    [Linkedin](https://www.linkedin.com/in/zissis-chroneos-7783898)
    
 * Dr. E. Scott Halstead
-   [Linkedin](https://www.linkedin.com/in/e-scott-halstead-012a2118)
+   
+    [Linkedin](https://www.linkedin.com/in/e-scott-halstead-012a2118)
