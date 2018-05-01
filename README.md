@@ -1,8 +1,7 @@
-# Welcome to the data repository from the [Silveyra Lab]
+# Welcome to the data repository from the [Silveyra Lab](https://twitter.com/silveyralab?lang=en)
+
 =========
 
-
-Follow us on [twitter](https://twitter.com/silveyralab?lang=en)
 
 
 ![Pulmonary Immunology and Physiology Laboratory](https://lh3.googleusercontent.com/-Y-N5DQvxqv8/AAAAAAAAAAI/AAAAAAAAABM/Hed4RGZhtWs/s360-c-k-no/photo.jpg)
