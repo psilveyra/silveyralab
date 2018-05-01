@@ -1,6 +1,6 @@
 # Welcome to the data repository from the Silveyra Lab
 
-=========
+
 Follow us on [twitter!](https://twitter.com/silveyralab?lang=en)
 
 
