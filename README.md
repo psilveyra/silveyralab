@@ -1,21 +1,28 @@
-# Welcome to the data repository from the [Silveyra Lab] (https://profiles.psu.edu/profiles/display/112384) 
+# Welcome to the data repository from the [Silveyra Lab]
 =========
+
+
+Follow us on [twitter](https://twitter.com/silveyralab?lang=en)
+
 
 ![Pulmonary Immunology and Physiology Laboratory](https://lh3.googleusercontent.com/-Y-N5DQvxqv8/AAAAAAAAAAI/AAAAAAAAABM/Hed4RGZhtWs/s360-c-k-no/photo.jpg)
 
 [Pulmonary Immunology and Physiology Core](http://www.pennstatehershey.org/web/pulmonary-core/home)
 
+
 ---------
-#Here you will find information about our projects, protocols, and data analysis from our [publications](http://www.ncbi.nlm.nih.gov/myncbi/browse/collection/43899845/?sort=date&direction=descending)
+Here you will find information about our projects, protocols, and data analysis from our [publications](http://www.ncbi.nlm.nih.gov/myncbi/browse/collection/43899845/?sort=date&direction=descending)
+
 
 ---------
 Data repository
 [miRNA expression in lung tissue - GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111667)
 [miRNA expression in lung tissue - raw data and R files](http://psilveyra.github.io/silveyralab/miRNA_ozone)
 
+
 ---------
 
-#Lab members and contact information
+Lab members and contact information
 
 * Dr. Patricia Silveyra 
 
@@ -27,6 +34,7 @@ Data repository
     
 
 * Nathalie Fuentes
+
      [Linkedin](https://www.linkedin.com/in/nathaliefuentes)
 
 * Marvin Nicoleau
@@ -37,9 +45,10 @@ Data repository
 
 * Dr. Lidys Rivera
 
+
 ***
 
-#Our Collaborators
+Our Collaborators
 
 * Dr. Zissis Chroneos
    
