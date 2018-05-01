@@ -1,7 +1,7 @@
-# Welcome to the data repository from the [Silveyra Lab](https://twitter.com/silveyralab?lang=en)
+# Welcome to the data repository from the Silveyra Lab
 
 =========
-
+Follow us on [twitter!](https://twitter.com/silveyralab?lang=en)
 
 
 ![Pulmonary Immunology and Physiology Laboratory](https://lh3.googleusercontent.com/-Y-N5DQvxqv8/AAAAAAAAAAI/AAAAAAAAABM/Hed4RGZhtWs/s360-c-k-no/photo.jpg)
@@ -15,7 +15,9 @@ Here you will find information about our projects, protocols, and data analysis 
 
 ---------
 Data repository
+
 [miRNA expression in lung tissue - GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111667)
+
 [miRNA expression in lung tissue - raw data and R files](http://psilveyra.github.io/silveyralab/miRNA_ozone)
 
 
