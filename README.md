@@ -16,7 +16,8 @@ Here you will find information about our projects, protocols, and data analysis 
 ---------
 Data repository
 
-[mRNA expression female lung tissue across the estrous cycle - raw data](http://psilveyra.github.io/silveyralab/GA_RT-PCR Silveyra.xls)
+[mRNA expression female lung tissue across the estrous cycle - raw data](http://psilveyra.github.io/silveyralab/GA_RTPCR_Silveyra.xls)
+
 
 [miRNA expression in lung tissue - GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111667)
 
