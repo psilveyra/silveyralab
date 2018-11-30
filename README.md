@@ -20,6 +20,8 @@ Data repository
 
 [miRNA expression in lung tissue - raw data and R files](http://psilveyra.github.io/silveyralab/miRNA_ozone)
 
+[mRNA expression female lung tissue across the estrous cycle - raw data](http://psilveyra.github.io/silveyralab/miRNA_ozone)
+
 
 ---------
 
@@ -28,10 +30,6 @@ Lab members and contact information
 * Dr. Patricia Silveyra 
 
      [Linkedin](https://www.linkedin.com/in/patriciasilveyra)
-    
-     [Penn State Profile](https://profiles.psu.edu/profiles/display/112384)
-    
-     [Women's Health Core](http://www.womenshealthcoe.psu.edu/bio_silveyra.html)
     
 
 * Nathalie Fuentes
@@ -44,17 +42,4 @@ Lab members and contact information
      
 * Susan DiAngelo
 
-* Dr. Lidys Rivera
 
-
-***
-
-Our Collaborators
-
-* Dr. Zissis Chroneos
-   
-    [Linkedin](https://www.linkedin.com/in/zissis-chroneos-7783898)
-   
-* Dr. E. Scott Halstead
-   
-    [Linkedin](https://www.linkedin.com/in/e-scott-halstead-012a2118)
