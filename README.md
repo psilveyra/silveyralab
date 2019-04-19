@@ -28,7 +28,7 @@ Fuentes et al. 2019 - "Modulation of the lung inflammatory response to ozone by 
 Fuentes et al. 2018 - "Sex-specific microRNA expression networks in an acute mouse model of ozone-induced lung inflammation"
 [Access paper online](https://bsd.biomedcentral.com/articles/10.1186/s13293-018-0177-7)
 
-[microRNA expression female lung tissue - raw data](http://psilveyra.github.io/silveyralab/miGA_RTPCR_Silveyra.xls)
+[microRNA expression female lung tissue - raw data](http://psilveyra.github.io/silveyralab/miGA_RTPCR Silveyra.xls)
 
 [microRNA expression in lung tissue - GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111667)
 
