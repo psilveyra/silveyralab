@@ -26,17 +26,15 @@ Fesen et al. 2019 - "The role of microRNAs in chronic pseudomonas lung infection
 
 Fuentes et al. 2019 - "Modulation of the lung inflammatory response to ozone by the estrous cycle" - 
 [Access paper online](https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.14026) - 
-[Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE123276)
-
+[Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE123276) -
 [mRNA expression female lung tissue across the estrous cycle - raw data](http://psilveyra.github.io/silveyralab/GA_RTPCR_Silveyra.xls)
 
 --
 
-2018 - Fuentes N, Roy A, Mishra V, Cabello N, Silveyra P. Sex-specific microRNA expression networks in an acute model of ozone-induced lung inflammation. Biol Sex Differ. 2018 May 8;9(1):18. 
+Fuentes N, Roy A, Mishra V, Cabello N, Silveyra P. Sex-specific microRNA expression networks in an acute model of ozone-induced lung inflammation. Biol Sex Differ. 2018 May 8;9(1):18. 
 [Access paper online](https://bsd.biomedcentral.com/articles/10.1186/s13293-018-0177-7) - 
-[Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111667)
-
-[microRNA expression female lung tissue - raw data](http://psilveyra.github.io/silveyralab/miGA_RTPCR_Silveyra.xls)
+[Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111667) -
+[microRNA expression IN female lung tissue raw data](http://psilveyra.github.io/silveyralab/miGA_RTPCR_Silveyra.xls)
 
 
 
