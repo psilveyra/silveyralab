@@ -17,7 +17,7 @@ Here you will find information about our projects, protocols, and data analysis 
 ## Data repository
 
 Fesen K, Silveyra P, Fuentes N, Nicoleau M, Rivera L, Kitch D, Graff G, Siddaiah R. 
-**"The Role of microRNAs in Chronic Pseudomonas Lung Infection in Cystic Fibrosis". Respiratory Medicine 151 (2019) 133-138
+**"The Role of microRNAs in Chronic Pseudomonas Lung Infection in Cystic Fibrosis". Respiratory Medicine 151 (2019) 133-138**
 
 [Access paper online](https://www.resmedjournal.com/article/S0954-6111(19)30133-7/fulltext) - 
 [Access GEO](coming soon) -
@@ -26,7 +26,7 @@ Fesen K, Silveyra P, Fuentes N, Nicoleau M, Rivera L, Kitch D, Graff G, Siddaiah
 --
 
 Fuentes N, Cabello N, Nicoleau M, Chroneos Z, Silveyra P. 
-**"Modulation of the lung inflammatory response to ozone by the estrous cycle". Physiol Rep. 2019 Mar;7(5):e14026. 
+**"Modulation of the lung inflammatory response to ozone by the estrous cycle". Physiol Rep. 2019 Mar;7(5):e14026.** 
 
 [Access paper online](https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.14026) - 
 [Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE123276) -
@@ -35,7 +35,7 @@ Fuentes N, Cabello N, Nicoleau M, Chroneos Z, Silveyra P.
 --
 
 Fuentes N, Roy A, Mishra V, Cabello N, Silveyra P. 
-**"Sex-specific microRNA expression networks in an acute model of ozone-induced lung inflammation". Biol Sex Differ. 2018 May 8;9(1):18.
+**"Sex-specific microRNA expression networks in an acute model of ozone-induced lung inflammation". Biol Sex Differ. 2018 May 8;9(1):18.**
 
 [Access paper online](https://bsd.biomedcentral.com/articles/10.1186/s13293-018-0177-7) - 
 [Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111667) -
