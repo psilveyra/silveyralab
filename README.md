@@ -20,7 +20,7 @@ Fesen et al. 2019 - "The role of microRNAs in chronic pseudomonas lung infection
 [Access paper online](https://www.resmedjournal.com/article/S0954-6111(19)30133-7/fulltext) - 
 [Access GEO](coming soon)
 
-[miRNA expression in EBC - raw data](http://psilveyra.github.io/silveyralab/CF_Silveyra.xls)
+[miRNA expression in EBC - raw data](http://psilveyra.github.io/silveyralab/CF_RTPCR_Silveyra.xls)
 
 --
 
