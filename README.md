@@ -17,7 +17,7 @@ Here you will find information about our projects, protocols, and data analysis 
 Data repository
 
 *Modulation of the lung inflammatory response to ozone by the estrous cycle 
-[link to publication] (https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.14026)
+[Access paper online] (https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.14026)
 [mRNA expression female lung tissue across the estrous cycle - raw data](http://psilveyra.github.io/silveyralab/GA_RTPCR_Silveyra.xls)
 [mRNA expression in lung tissue - GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE123276)
 
