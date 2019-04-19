@@ -1,12 +1,10 @@
 # Welcome to the data repository from the Silveyra Lab
 
+* Dr. Patricia Silveyra 
+
+     [Linkedin](https://www.linkedin.com/in/patriciasilveyra)
 
 Follow us on [twitter!](https://twitter.com/silveyralab?lang=en)
-
-
-![Pulmonary Immunology and Physiology Laboratory](https://lh3.googleusercontent.com/-Y-N5DQvxqv8/AAAAAAAAAAI/AAAAAAAAABM/Hed4RGZhtWs/s360-c-k-no/photo.jpg)
-
-[Pulmonary Immunology and Physiology Core](http://www.pennstatehershey.org/web/pulmonary-core/home)
 
 
 ---------
@@ -41,20 +39,6 @@ Fuentes N, Roy A, Mishra V, Cabello N, Silveyra P.
 [Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111667) -
 [microRNA expression in lung tissue raw data](http://psilveyra.github.io/silveyralab/miGA_RTPCR_Silveyra.xls)
 
-
-
----------
-
-Lab members and contact information
-
-* Dr. Patricia Silveyra 
-
-     [Linkedin](https://www.linkedin.com/in/patriciasilveyra)
-    
-
-* Nathalie Fuentes
-
-     [Linkedin](https://www.linkedin.com/in/nathaliefuentes)
 
 
 
