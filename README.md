@@ -1,6 +1,6 @@
 # Welcome to the data repository from the Silveyra Lab
 
-PI: Dr. Patricia Silveyra - [Linkedin](https://www.linkedin.com/in/patriciasilveyra)
+**PRINCIPAL INVESTIGATOR**:   Dr. Patricia Silveyra - [Linkedin](https://www.linkedin.com/in/patriciasilveyra)
 
 Follow us on [twitter!](https://twitter.com/silveyralab?lang=en)
 
