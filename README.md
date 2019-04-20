@@ -1,15 +1,10 @@
 # Welcome to the data repository from the Silveyra Lab
 
-* Dr. Patricia Silveyra 
-
-     [Linkedin](https://www.linkedin.com/in/patriciasilveyra)
+PI: Dr. Patricia Silveyra - [Linkedin](https://www.linkedin.com/in/patriciasilveyra)
 
 Follow us on [twitter!](https://twitter.com/silveyralab?lang=en)
 
-
----------
 Here you will find information about our projects, protocols, and data analysis from our [publications](http://www.ncbi.nlm.nih.gov/myncbi/browse/collection/43899845/?sort=date&direction=descending)
-
 
 ---------
 ## Data repository
