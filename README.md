@@ -13,7 +13,7 @@ Fesen K, Silveyra P, Fuentes N, Nicoleau M, Rivera L, Kitch D, Graff G, Siddaiah
 **"The Role of microRNAs in Chronic Pseudomonas Lung Infection in Cystic Fibrosis". Respiratory Medicine 151 (2019) 133-138**
 
 [Access paper online](https://www.resmedjournal.com/article/S0954-6111(19)30133-7/fulltext) - 
-[Access GEO](coming soon) -
+[Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE130159) -
 [miRNA expression in EBC raw data](http://psilveyra.github.io/silveyralab/CF_RTPCR_Silveyra.xls)
 
 --
