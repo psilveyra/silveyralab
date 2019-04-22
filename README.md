@@ -29,7 +29,7 @@ Fuentes N, Roy A, Mishra V, Cabello N, Silveyra P.
 **"Sex-specific microRNA expression networks in an acute model of ozone-induced lung inflammation".** [*Biol Sex Differ. 2018 May 8;9(1):18*](https://bsd.biomedcentral.com/articles/10.1186/s13293-018-0177-7)
 
 [Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111667) -
-[microRNA expression in lung tissue (raw data)](http://psilveyra.github.io/silveyralab/miGA_RTPCR_Silveyra.xls)
+[miRNA expression in lung tissue (raw data)](http://psilveyra.github.io/silveyralab/miGA_RTPCR_Silveyra.xls)
 
 
 
