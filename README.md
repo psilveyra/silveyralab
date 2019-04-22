@@ -18,18 +18,16 @@ Fesen K, Silveyra P, Fuentes N, Nicoleau M, Rivera L, Kitch D, Graff G, Siddaiah
 --
 
 Fuentes N, Cabello N, Nicoleau M, Chroneos Z, Silveyra P. 
-**"Modulation of the lung inflammatory response to ozone by the estrous cycle".** *Physiol Rep. 2019 Mar;7(5):e14026.*
+**"Modulation of the lung inflammatory response to ozone by the estrous cycle".** [*Physiol Rep. 2019 Mar;7(5):e14026.*] (https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.14026)
 
-[Access paper online](https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.14026) - 
 [Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE123276) -
 [mRNA expression in lung tissue raw data](http://psilveyra.github.io/silveyralab/GA_RTPCR_Silveyra.xls)
 
 --
 
 Fuentes N, Roy A, Mishra V, Cabello N, Silveyra P. 
-**"Sex-specific microRNA expression networks in an acute model of ozone-induced lung inflammation".** *Biol Sex Differ. 2018 May 8;9(1):18.*
+**"Sex-specific microRNA expression networks in an acute model of ozone-induced lung inflammation".** [*Biol Sex Differ. 2018 May 8;9(1):18.*](https://bsd.biomedcentral.com/articles/10.1186/s13293-018-0177-7)
 
-[Access paper online](https://bsd.biomedcentral.com/articles/10.1186/s13293-018-0177-7) - 
 [Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111667) -
 [microRNA expression in lung tissue raw data](http://psilveyra.github.io/silveyralab/miGA_RTPCR_Silveyra.xls)
 
