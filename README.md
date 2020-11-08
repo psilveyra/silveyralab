@@ -41,5 +41,5 @@ Fuentes N, Roy A, Mishra V, Cabello N, Silveyra P.
 
 [Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE111667) -
 [miRNA expression in lung tissue (raw data)](http://psilveyra.github.io/silveyralab/miGA_RTPCR_Silveyra.xls) -
-[R code] (http://psilveyra.github.io/silveyralab/GA_RTPCR_Silveyra.xls/ArraymiRNAmouse.Rmd)
+[R code](http://psilveyra.github.io/silveyralab/GA_RTPCR_Silveyra.xls/ArraymiRNAmouse.Rmd)
 
