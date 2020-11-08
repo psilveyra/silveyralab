@@ -1,0 +1,460 @@
+---
+title: "Array"
+author: "Silveyra"
+date: "January 15 2017"
+output:
+  html_document: default
+---
+
+```{r}
+source("https://bioconductor.org/biocLite.R")
+biocLite()
+biocLite("HTqPCR")
+biocLite("limma")
+biocLite("hexbin")
+biocLite("affy")
+biocLite("gage")
+library(gage)
+```
+
+```{r}
+require(hexbin)
+require(limma)
+require(HTqPCR)
+require(affy)
+require(gplots)
+require(RColorBrewer)
+```
+
+
+
+```{r}
+CTvalues=read.csv("arraynoH.csv")
+pheno=read.csv("femaleRNAmatrix.csv")
+samplenames=c(pheno$Sample)
+datawithID=read.csv("array.csv")
+mRNAlist=datawithID[,1]
+mRNAlist=data.matrix(mRNAlist)
+colnames(CTvalues)=samplenames
+```
+
+```{r summary and plots of Ct raw data}
+CTvaluesM=data.matrix(CTvalues)
+boxplot(CTvaluesM)
+summary(CTvaluesM)
+plotCtHeatmap(CTvaluesM, gene.names = mRNAlist, sample.names = pheno$code, dist = "euclidean", "CT by day")
+plotCtHeatmap(CTvaluesM, gene.names = mRNAlist, sample.names = pheno$Treatment, dist = "euclidean", "CT all cycles")
+plotCtHeatmap(CTvaluesM, gene.names = mRNAlist, dist = "euclidean", "CT all cycles")
+```
+
+```{r groups}
+FA=c(1,2,3,6,8,11,12,13,18,19,21,22,23,24,25,26,28,30,31,33)
+pheno$code[FA]
+O3=c(4,5,7,9,10,14,15,16,17,20,27,29,32,34)
+pheno$code[O3]
+
+FA_D1=c(21,22,23,31)
+pheno$code[FA_D1]
+FA_D2=c(1,3,12,33)
+pheno$code[FA_D2]
+FA_lutea=c(21,22,23,31,1,3,12,33)
+pheno$code[FA_lutea]
+
+FA_P=c(2,6,11,19,24,30)
+pheno$code[FA_P]
+FA_E=c(8,13,18,25,26,28)
+pheno$code[FA_E]
+FA_folicular=c(2,6,11,24,30,8,13,18,19,25,26,28)
+pheno$code[FA_folicular]
+
+O3_D1=c(7,15,32)
+pheno$code[O3_D1]
+O3_D2=c(16,20,34)
+pheno$code[O3_D2]
+O3_lutea=c(7,15,32,16,20,34)
+pheno$code[O3_lutea]
+
+O3_P=c(5,10,14,27,29)
+pheno$code[O3_P]
+O3_E=c(4,9,17)
+pheno$code[O3_E]
+O3_folicular=c(5,10,14,27,29,4,9,17)
+pheno$code[O3_folicular]
+```
+
+```{r}
+plot(hexplom(CTvaluesM[,FA]), main = "FA")
+plot(hexplom(CTvaluesM[,O3]), main = "O3")
+plot(hexplom(CTvaluesM[,FA_D1]), main = "FA D1")
+plot(hexplom(CTvaluesM[,O3_D1]), main = "O3 D1")
+plot(hexplom(CTvaluesM[,FA_D2]), main = "FA D2")
+plot(hexplom(CTvaluesM[,O3_D2]), main = "O3 D2")
+plot(hexplom(CTvaluesM[,FA_P]), main = "FA P")
+plot(hexplom(CTvaluesM[,O3_P]), main = "O3 P")
+plot(hexplom(CTvaluesM[,FA_E]), main = "FA E")
+plot(hexplom(CTvaluesM[,O3_E]), main = "O3 E")
+plot(hexplom(CTvaluesM[,FA_folicular]), main = "FA folicular")
+plot(hexplom(CTvaluesM[,O3_folicular]), main = "O3 folicular")
+plot(hexplom(CTvaluesM[,FA_lutea]), main = "FA lutea")
+plot(hexplom(CTvaluesM[,O3_lutea]), main = "O3 lutea")
+```
+
+```{r}
+Expvalues=read.csv("expressionnoH.csv")
+ExpvaluesL=read.csv("expressionlog2noH.csv")
+colnames(Expvalues)=samplenames
+rownames(Expvalues)=mRNAlist
+colnames(ExpvaluesL)=samplenames
+rownames(ExpvaluesL)=mRNAlist
+```
+
+
+```{r visualize expression data}
+boxplot(Expvalues, main = "raw expression")
+boxplot(ExpvaluesL, main = "log expression")
+boxplot(Expvalues[,FA], main = "FA")
+boxplot(Expvalues[,O3], main = "O3")
+boxplot(ExpvaluesL[,FA], main = "FA")
+boxplot(ExpvaluesL[,O3], main = "O3")
+```
+
+
+
+```{r}
+design=model.matrix(~0 + pheno$Treatment)
+colnames(design)=c("FA", "O3")
+rownames(design)=pheno$Sample
+print(design)
+```
+
+```{r}
+design2=model.matrix(~0 + pheno$code)
+colnames(design2)=c("FA_D1", "FA_D2", "FA_P", "FA_E", "O3_D1", "O3_D2", "O3_P", "O3_E")
+rownames(design2)=pheno$Sample
+print(design2)
+```
+
+```{r}
+design3=model.matrix(~0 + pheno$Phase)
+colnames(design3)=c("FA_folicular", "FA_lutea", "O3_folicular", "O3_lutea")
+rownames(design3)=pheno$Sample
+print(design3)
+```
+
+CONTRASTS
+
+```{r contrasts}
+contrasts=makeContrasts(O3vFA=O3-FA,levels = design)
+contrasts2=makeContrasts(O3D1vFAD1=O3_D1-FA_D1,O3D2vFAD2=O3_D2-FA_D2,O3PvFAP=O3_P-FA_P,O3EvFAE=O3_E-FA_E,levels = design2)
+contrasts3=makeContrasts(FAallvP=FA_P-FA_D1-FA_D2-FA_E,O3allvP=O3_P-O3_D1-O3_D2-O3_E, levels = design2)
+contrasts4=makeContrasts(FAFvL=FA_folicular-FA_lutea,O3FvL=O3_folicular-O3_lutea, levels = design3)
+contrasts5=makeContrasts(folO3vFA=O3_folicular-FA_folicular,lutO3vFA=O3_lutea-FA_lutea, levels = design3)
+print(contrasts)
+print(contrasts2)
+print(contrasts3)
+print(contrasts4)
+print(contrasts5)
+```
+
+
+```{r}
+fit=lmFit(Expvalues,design)
+fit2=lmFit(Expvalues,design2)
+fit3=lmFit(Expvalues,design3)
+
+fitL=lmFit(ExpvaluesL,design)
+fitL2=lmFit(ExpvaluesL,design2)
+fitL3=lmFit(ExpvaluesL,design3)
+```
+
+```{r fit cell means with contrasts}
+fitcontrast=contrasts.fit(fit,contrasts)
+efitcontrast=eBayes(fitcontrast)
+
+fitcontrast2=contrasts.fit(fit2,contrasts2)
+efitcontrast2=eBayes(fitcontrast2)
+
+fitcontrast3=contrasts.fit(fit2,contrasts3)
+efitcontrast3=eBayes(fitcontrast3)
+
+fitcontrast4=contrasts.fit(fit3,contrasts4)
+efitcontrast4=eBayes(fitcontrast4)
+
+fitcontrast5=contrasts.fit(fit3,contrasts5)
+efitcontrast5=eBayes(fitcontrast5)
+
+
+fitcontrastL=contrasts.fit(fitL,contrasts)
+efitcontrastL=eBayes(fitcontrastL)
+
+fitcontrastL2=contrasts.fit(fitL2,contrasts2)
+efitcontrastL2=eBayes(fitcontrastL2)
+
+fitcontrastL3=contrasts.fit(fitL2,contrasts3)
+efitcontrastL3=eBayes(fitcontrastL3)
+
+fitcontrastL4=contrasts.fit(fitL3,contrasts4)
+efitcontrastL4=eBayes(fitcontrastL4)
+
+fitcontrastL5=contrasts.fit(fitL3,contrasts5)
+efitcontrastL5=eBayes(fitcontrastL5)
+```
+
+
+FA vs O3
+
+```{r retrieve lists}
+FAvO3top=topTable(efitcontrast, coef = "O3vFA", adjust.method = "BH", n = 30, p.value = 0.05, sort.by = "P", resort.by = "logFC")
+FAvO3top
+dim(FAvO3top)
+write.csv(FAvO3top, file = "femalesO3.csv")
+```
+
+```{r}
+ExpvaluesM=data.matrix(Expvalues)
+```
+
+
+```{r}
+boxplot(ExpvaluesM[57,] ~ pheno$Treatment, main = mRNAlist[57], ylab = "expression")
+boxplot(ExpvaluesM[31,] ~ pheno$Treatment, main = mRNAlist[31], ylab = "expression")
+```
+
+
+```{r all genes}
+FAvO3top2=topTable(efitcontrast, coef = "O3vFA", adjust.method = "BH", n=87, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+FAvO3top2
+dim(FAvO3top2)
+```
+
+
+
+FA vs O3 LOG
+```{r}
+FAvO3topL=topTable(efitcontrastL, coef = "O3vFA", adjust.method = "BH", n=50, p.value = 0.05, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+FAvO3topL
+volcanoplot(efitcontrastL,coef = "O3vFA")
+dim(FAvO3topL)
+write.csv(FAvO3topL,file = "femalesO3log.csv")
+```
+
+```{r}
+ExpvaluesML=data.matrix(ExpvaluesL)
+```
+
+```{r}
+par(mfrow=c(2,3))
+boxplot(ExpvaluesML[11,] ~ pheno$Treatment, main = mRNAlist[11], ylab = "log expression")
+boxplot(ExpvaluesML[36,] ~ pheno$Treatment, main = mRNAlist[36], ylab = "log expression")
+boxplot(ExpvaluesML[57,] ~ pheno$Treatment, main = mRNAlist[57], ylab = "log expression")
+boxplot(ExpvaluesML[31,] ~ pheno$Treatment, main = mRNAlist[31], ylab = "log expression")
+boxplot(ExpvaluesML[34,] ~ pheno$Treatment, main = mRNAlist[34], ylab = "log expression")
+boxplot(ExpvaluesML[68,] ~ pheno$Treatment, main = mRNAlist[68], ylab = "log expression")
+```
+
+
+
+```{r all genes log}
+FAvO3topL2=topTable(efitcontrastL, coef = "O3vFA", adjust.method = "BH", n=90, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+FAvO3topL2
+dim(FAvO3topL2)
+```
+
+```{r}
+heatmap(ExpvaluesML,labRow = mRNAlist, labCol = pheno$Treatment)
+heatmap(ExpvaluesML,labRow = mRNAlist, labCol = pheno$code)
+heatmap(ExpvaluesM,labRow = mRNAlist, labCol = pheno$Treatment)
+heatmap(ExpvaluesM,labRow = mRNAlist, labCol = pheno$code)
+```
+
+FA vs O3 per day of the cycle
+
+```{r}
+cycletopD1=toptable(efitcontrast2, coef = "O3D1vFAD1", adjust.method = "BH", n = 30, p.value = 0.05, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+cycletopD2=toptable(efitcontrast2, coef = "O3D2vFAD2", adjust.method = "BH", n = 30, p.value = 0.05, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+cycletopP=toptable(efitcontrast2, coef = "O3PvFAP", adjust.method = "BH", n = 30, p.value = 0.05, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+cycletopE=toptable(efitcontrast2, coef = "O3EvFAE", adjust.method = "BH", n = 30, p.value = 0.05, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+
+cycletopD1
+cycletopD2
+cycletopP
+cycletopE
+```
+
+
+FA vs O3 per day of the cycle log
+
+```{r}
+cycletopD1L=toptable(efitcontrastL2, coef = "O3D1vFAD1", adjust.method = "BH", n = 30, p.value = 0.05, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+cycletopD2L=toptable(efitcontrastL2, coef = "O3D2vFAD2", adjust.method = "BH", n = 30, p.value = 0.05, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+cycletopPL=toptable(efitcontrastL2, coef = "O3PvFAP", adjust.method = "BH", n = 30, p.value = 0.05, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+cycletopEL=toptable(efitcontrastL2, coef = "O3EvFAE", adjust.method = "BH", n = 30, p.value = 0.05, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+
+cycletopD1L
+cycletopD2L
+cycletopPL
+cycletopEL
+```
+
+```{r}
+boxplot(ExpvaluesM[11,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[11], ylab = "expression")
+boxplot(ExpvaluesM[36,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[36], ylab = "expression")
+boxplot(ExpvaluesM[57,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[57], ylab = "expression")
+boxplot(ExpvaluesM[31,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[31], ylab = "expression")
+boxplot(ExpvaluesML[34,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[34], ylab = "expression")
+boxplot(ExpvaluesML[11,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[11], ylab = "log expression")
+
+boxplot(ExpvaluesML[57,] ~ pheno$code, main = mRNAlist[57], ylab = "log expression")
+boxplot(ExpvaluesML[36,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[36], ylab = "log expression")
+boxplot(ExpvaluesML[57,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[57], ylab = "log expression")
+boxplot(ExpvaluesML[31,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[31], ylab = "log expression")
+boxplot(ExpvaluesML[34,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[34], ylab = "log expression")
+```
+
+```{r}
+boxplot(ExpvaluesML[11,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[11], ylab = "log expression")
+boxplot(ExpvaluesML[57,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[57], ylab = "log expression")
+boxplot(ExpvaluesML[36,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[36], ylab = "log expression")
+boxplot(ExpvaluesML[55,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[55], ylab = "log expression")
+boxplot(ExpvaluesML[68,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[68], ylab = "log expression")
+boxplot(ExpvaluesML[49,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[49], ylab = "log expression")
+boxplot(ExpvaluesML[25,] ~ pheno$Treatment*pheno$Cycle, main = mRNAlist[25], ylab = "log expression")
+```
+
+
+
+
+```{r}
+cycletopD1_genesL=cbind(cycletopD1L[,1:2],cycletopD1L[,5])
+write.csv(cycletopD1_genesL, file = "diestru1sallL.csv")
+```
+
+```{r}
+cycletopP_genesL=cbind(cycletopPL[,1:2],cycletopPL[,5])
+write.csv(cycletopP_genesL, file = "proestrussallL.csv")
+cycletopP_genes=cbind(cycletopP[,1:2],cycletopP[,5])
+write.csv(cycletopP_genes, file = "proestrussall.csv")
+```
+
+```{r}
+cycletopE_genesL=cbind(cycletopEL[,1:2],cycletopEL[,5])
+write.csv(cycletopE_genesL, file = "estrussallL.csv")
+cycletopE_genes=cbind(cycletopE[,1:2],cycletopE[,5])
+write.csv(cycletopE_genes, file = "estrussall.csv")
+```
+
+
+
+ALL VS P
+
+```{r}
+cyclettopLFA=toptable(efitcontrastL3, coef = "FAallvP", adjust.method = "BH", n = 30, p.value = 0.05, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+
+cyclettopLO3=toptable(efitcontrastL3, coef = "O3allvP", adjust.method = "BH", n = 30, p.value = 0.05, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+
+cyclettopLFA
+cyclettopLO3
+
+```
+
+
+
+folic vs lut
+
+```{r}
+topLfolO3FA=toptable(efitcontrast5, coef = "folO3vFA", adjust.method = "BH", n = 30, p.value = 0.05, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+
+topLlutO3FA=toptable(efitcontrast5, coef = "lutO3vFA", adjust.method = "BH", n = 30, p.value = 0.05, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+
+topLfolO3FAL=toptable(efitcontrastL5, coef = "folO3vFA", adjust.method = "BH", n = 30, p.value = 0.05, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+
+topLlutO3FAL=toptable(efitcontrastL5, coef = "lutO3vFA", adjust.method = "BH", n = 30, p.value = 0.05, sort.by = "P", resort.by = "logFC", genelist = mRNAlist)
+
+topLfolO3FA
+write.csv(topLfolO3FA,file="folicular.csv")
+topLfolO3FAL
+write.csv(topLfolO3FAL,file="folicularL.csv")
+
+topLlutO3FA
+write.csv(topLlutO3FA,file="lutea.csv")
+topLlutO3FAL
+write.csv(topLlutO3FAL,file="luteaL.csv")
+```
+
+
+```{r}
+boxplot(ExpvaluesM[11,] ~ pheno$Phase, main = mRNAlist[11], ylab = "expression")
+boxplot(ExpvaluesM[57,] ~ pheno$Phase, main = mRNAlist[57], ylab = "expression")
+boxplot(ExpvaluesM[36,] ~ pheno$Phase, main = mRNAlist[36], ylab = "expression")
+boxplot(ExpvaluesM[31,] ~ pheno$Phase, main = mRNAlist[31], ylab = "expression")
+boxplot(ExpvaluesML[11,] ~ pheno$Phase, main = mRNAlist[11], ylab = "log expression")
+boxplot(ExpvaluesML[57,] ~ pheno$Phase, main = mRNAlist[57], ylab = "log expression")
+boxplot(ExpvaluesML[36,] ~ pheno$Phase, main = mRNAlist[36], ylab = "log expression")
+boxplot(ExpvaluesML[31,] ~ pheno$Phase, main = mRNAlist[31], ylab = "log expression")
+boxplot(ExpvaluesML[32,] ~ pheno$Phase, main = mRNAlist[32], ylab = "log expression")
+boxplot(ExpvaluesML[68,] ~ pheno$Phase, main = mRNAlist[68], ylab = "log expression")
+```
+
+
+```{r}
+DiffSample=c(topLfolO3FA[,1])
+DiffSampleL=c(topLfolO3FAL[,1])
+
+TopExp=Expvalues[DiffSample,]
+TopExpL=ExpvaluesL[DiffSampleL,]
+
+TopExpE=data.matrix(TopExp)
+TopExpEL=data.matrix(TopExpL)
+colnames(TopExpE)=samplenames
+colnames(TopExpEL)=samplenames
+
+heatmap(TopExpE,labRow = DiffSample, labCol = pheno$Phase)
+heatmap(TopExpEL,labRow = DiffSampleL, labCol = pheno$Phaset)
+
+heatmap(TopExpE,labRow = DiffSample, labCol = pheno$code)
+heatmap(TopExpEL,labRow = DiffSampleL, labCol = pheno$code)
+
+plot(hclust(dist((TopExpEL))),main="Euclidean, Complete")
+plot(hclust(as.dist(1-cor(t(TopExpEL)))),main="Correlation, Complete")
+heatmap(TopExpEL,as.dist(1-(cor(t(TopExpEL)))), labRow = DiffSampleL, labCol = pheno$Phase)
+heatmap(TopExpEL,as.dist(1-(cor(t(TopExpEL)))), labRow = DiffSampleL, labCol = pheno$Treatment)
+heatmap.2(TopExpEL,as.dist(1-(cor(t(TopExpEL)))), labRow = DiffSampleL, labCol = pheno$Treatment, col=brewer.pal(10,"RdYlGn"), trace="none", dendrogram = "column", main = "Log Gene Expression")
+
+heatmap.2(TopExpEL,as.dist(1-(cor(t(TopExpEL)))), labRow = DiffSampleL, labCol = pheno$code, col=brewer.pal(10,"RdYlGn"), trace="none", dendrogram = "column", main = "Log Gene Expression", ylab = "genes", xlab = "treatment")
+
+heatmap.2(TopExpEL[1:5,],as.dist(1-(cor(t(TopExpE[1:5,])))), labRow = DiffSampleL, labCol = pheno$Phase, col=brewer.pal(11,"RdYlGn"), trace="none", dendrogram = "column", main = "Log Gene Expression")
+
+heatmap.2(TopExpEL[1:5,],as.dist(1-(cor(t(TopExpE[1:5,])))), labRow = DiffSampleL, col=brewer.pal(11,"RdYlGn"), trace="none", dendrogram = "column", main = "Log Gene Expression")
+
+plot(hclust(dist((TopExpE))),main="Euclidean, Complete")
+plot(hclust(as.dist(1-cor(t(TopExpE)))),main="Correlation, Complete")
+
+heatmap(TopExpE,as.dist(1-(cor(t(TopExpE)))), labRow = DiffSampleL, labCol = pheno$Phase)
+heatmap(TopExpE,as.dist(1-(cor(t(TopExpE)))), labRow = DiffSampleL, labCol = pheno$Treatment)
+
+heatmap.2(TopExpEL,as.dist(1-(cor(t(TopExpE)))), labRow = DiffSampleL, col=brewer.pal(10,"RdYlGn"), trace="none", dendrogram = "column", main = "Log Gene Expression")
+
+heatmap.2(TopExpEL,as.dist(1-(cor(t(TopExpE)))), labRow = DiffSampleL, labCol = pheno$Phase, col=brewer.pal(10,"RdYlGn"), trace="none", dendrogram = "column", main = "Log Gene Expression")
+
+heatmap.2(TopExpEL[1:9,],as.dist(1-(cor(t(TopExpE[1:9,])))), labRow = DiffSampleL, labCol = pheno$Phase, col=brewer.pal(11,"RdYlGn"), trace="none", dendrogram = "column", main = "Log Gene Expression")
+
+heatmap.2(TopExpEL[1:9,],as.dist(1-(cor(t(TopExpE[1:9,])))), labRow = DiffSampleL, col=brewer.pal(11,"RdYlGn"), trace="none", dendrogram = "column", main = "Log Gene Expression")
+```
+
+
+```{r}
+sessionInfo()
+print(gc())
+```
+
+
+
+
+
+
+
+
+
+
+
+
