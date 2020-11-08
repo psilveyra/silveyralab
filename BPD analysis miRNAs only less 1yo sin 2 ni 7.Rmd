@@ -1,0 +1,160 @@
+---
+title: "BPD analysis"
+author: "Silveyra"
+date: "Aug 6, 2020"
+output:
+  html_document: 
+    fig_caption: yes
+    theme: readable
+  pdf_document: default
+---
+
+
+
+```{r}
+require(hexbin)
+require(limma)
+```
+
+
+
+```{r}
+pheno=read.csv("group2.csv")
+samplenames=c(pheno$RID)
+Expvalues=read.csv("expression502noh.csv")
+ExpvaluesM=data.matrix(Expvalues)
+Expvalues2=read.csv("expression502.csv")
+ExpvaluesM2=data.matrix(Expvalues)
+colnames(ExpvaluesM)=samplenames
+miRNAlist2=read.csv("expression502.csv")
+miRNAlist2=miRNAlist2[,1]
+miRNAlist22=read.csv("expression52.csv")
+miRNAlist22=miRNAlist22[,1]
+summary(ExpvaluesM)
+```
+
+
+```{r}
+designBPD=model.matrix(~0 + pheno$group)
+colnames(designBPD)=c("C","BPD")
+rownames(designBPD)=pheno$RID
+print(designBPD)
+```
+
+
+```{r contrasts}
+contrastsBPD=makeContrasts(CvBPD=BPD-C,levels=designBPD)
+print(contrastsBPD)
+```
+
+
+```{r}
+fitBPD=lmFit(ExpvaluesM,designBPD)
+fitBPD2=lmFit(ExpvaluesM2,designBPD)
+```
+
+```{r fit cell means with contrasts}
+fitBPDcontrast=contrasts.fit(fitBPD,contrastsBPD)
+fitBPDcontrast=eBayes(fitBPDcontrast)
+fitBPDcontrast2=contrasts.fit(fitBPD2,contrastsBPD)
+fitBPDcontrast2=eBayes(fitBPDcontrast2)
+```
+
+CONTROL VS SEVERE BPD
+
+```{r}
+CvBPD=topTable(fitBPDcontrast, coef = "CvBPD", adjust = "BH", sort.by = "p", n=25, genelist = miRNAlist2)
+CvBPD
+write.csv(CvBPD,file = "CvBPD.csv")
+volcanoplot(fitBPDcontrast,coef = "CvBPD", style = "p-value", highlight = 25)
+abline(h=-log10(0.05), col="brown")
+
+CvBPD22=topTable(fitBPDcontrast2, coef = "CvBPD", adjust = "BH", sort.by = "p", n=25, genelist = miRNAlist2)
+CvBPD22
+volcanoplot(fitBPDcontrast2,coef = "CvBPD", style = "p-value", highlight = 25, names = "CvBPD22$ID" )
+abline(h=-log10(0.05), col="brown")
+```
+
+
+
+```{r}
+CvBPD2=topTable(fitBPDcontrast, coef = "CvBPD", adjust = "fdr", sort.by = "p", n=Inf, genelist = miRNAlist2)
+CvBPD2
+write.csv(CvBPD2,file = "CvBPD2.csv")
+```
+```{r}
+ExpvaluesL=log(ExpvaluesM)
+```
+
+
+boxplot top miRNAs
+```{r}
+par(mfrow=c(2,3))
+boxplot(ExpvaluesM[386,] ~ pheno$group, main = miRNAlist2[386], ylab = "expression")
+boxplot(ExpvaluesM[611,] ~ pheno$group, main = miRNAlist2[611], ylab = "expression")
+boxplot(ExpvaluesM[555,] ~ pheno$group, main = miRNAlist2[555], ylab = "expression")
+boxplot(ExpvaluesM[894,] ~ pheno$group, main = miRNAlist2[894], ylab = "expression")
+boxplot(ExpvaluesM[205,] ~ pheno$group, main = miRNAlist2[205], ylab = "expression")
+boxplot(ExpvaluesM[487,] ~ pheno$group, main = miRNAlist2[487], ylab = "expression")
+boxplot(ExpvaluesM[616,] ~ pheno$group, main = miRNAlist2[616], ylab = "expression")
+boxplot(ExpvaluesM[730,] ~ pheno$group, main = miRNAlist2[730], ylab = "expression")
+boxplot(ExpvaluesM[346,] ~ pheno$group, main = miRNAlist2[346], ylab = "expression")
+boxplot(ExpvaluesM[916,] ~ pheno$group, main = miRNAlist2[916], ylab = "expression")
+boxplot(ExpvaluesM[201,] ~ pheno$group, main = miRNAlist2[201], ylab = "expression")
+boxplot(ExpvaluesM[479,] ~ pheno$group, main = miRNAlist2[479], ylab = "expression")
+boxplot(ExpvaluesM[862,] ~ pheno$group, main = miRNAlist2[862], ylab = "expression")
+boxplot(ExpvaluesM[632,] ~ pheno$group, main = miRNAlist2[632], ylab = "expression")
+boxplot(ExpvaluesM[421,] ~ pheno$group, main = miRNAlist2[421], ylab = "expression")
+boxplot(ExpvaluesM[391,] ~ pheno$group, main = miRNAlist2[391], ylab = "expression")
+boxplot(ExpvaluesM[792,] ~ pheno$group, main = miRNAlist2[792], ylab = "expression")
+boxplot(ExpvaluesM[4,] ~ pheno$group, main = miRNAlist2[4], ylab = "expression")
+boxplot(ExpvaluesM[902,] ~ pheno$group, main = miRNAlist2[902], ylab = "expression")
+boxplot(ExpvaluesM[731,] ~ pheno$group, main = miRNAlist2[731], ylab = "expression")
+
+
+
+```
+
+
+```{r}
+heatmap(ExpvaluesM,labRow = miRNAlist2, labCol = pheno$group)
+```
+
+```{r}
+selected=(fitBPDcontrast$p.value[,1]) <0.1
+BPDsel=ExpvaluesM[selected,]
+miRNAlistsel=miRNAlist2[selected]
+heatmap(BPDsel,labRow = miRNAlistsel, labCol = pheno$group, col=topo.colors(100))
+
+selected1=(fitBPDcontrast$p.value[,1]) <0.05
+BPDsel1=ExpvaluesM[selected1,]
+miRNAlistsel1=miRNAlist2[selected]
+heatmap(BPDsel1,labRow = miRNAlistsel1, labCol = pheno$group, col=topo.colors(100))
+
+selected2=(fitBPDcontrast$p.value[,1]) <0.02
+BPDsel2=ExpvaluesM[selected2,]
+miRNAlistsel2=miRNAlist2[selected]
+heatmap(BPDsel2,labRow = miRNAlistsel2, labCol = pheno$group, col=topo.colors(100))
+```
+```{r}
+aheatmap(ExpvaluesM, color = colorRampPalette(c("blue","white","red"))(20), scale="row", annColors = "Set1", Colv = NULL, Rowv= NULL, annLegend = TRUE, annCol = pheno$group, labRow = miRNAlist2, border_color = "black")
+aheatmap(ExpvaluesM, color = colorRampPalette(c("blue","white","red"))(20), scale="row", annColors = "Set1", Colv = NULL, Rowv= NULL, annLegend = TRUE, border_color = "black", labRow = miRNAlist2, labCol = pheno$group, annCol = pheno$group)
+aheatmap(BPDsel1, color = colorRampPalette(c("blue","white","red"))(20), scale="row", annColors = "Set1", Colv = NULL, Rowv= NULL, annLegend = TRUE, border_color = "black", labCol = pheno$group, annCol = pheno$group)
+```
+```
+
+
+```{r}
+sessionInfo()
+print(gc())
+```
+
+
+
+
+
+
+
+
+
+

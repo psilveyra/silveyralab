@@ -1,0 +1,700 @@
+---
+title: "Array miRNA mouse"
+author: "Silveyra"
+date: "May 4 2017"
+output:
+  html_document: default
+---
+
+```{r}
+source("https://bioconductor.org/biocLite.R")
+biocLite()
+biocLite("limma")
+biocLite("hexbin")
+biocLite("affy")
+biocLite("gage")
+library(gage)
+
+```
+
+```{r}
+require(hexbin)
+require(limma)
+require(affy)
+require(gplots)
+require(RColorBrewer)
+```
+
+
+
+```{r}
+setwd("~/Dropbox/miRNA arrays to upload in R")
+CTvalues=read.csv("array2noH.csv")
+pheno=read.csv("miRNAmatrix.csv")
+pheno2=read.csv("miRNAmatrix2.csv")
+pheno2M=read.csv("miRNAmatrix2M.csv")
+pheno2F=read.csv("miRNAmatrix2F.csv")
+pheno2FP=read.csv("miRNAmatrix2FP.csv")
+pheno2FnoP=read.csv("miRNAmatrix2FnoP.csv")
+pheno3=read.csv("miRNAmatrix3.csv")
+phenoFA=read.csv("miRNAmatrixFA.csv")
+phenoO3=read.csv("miRNAmatrixO3.csv")
+samplenames=c(pheno$Sample)
+samplenames2=c(pheno2$Sample)
+samplenames3=c(pheno3$Sample)
+samplenamesFA=c(phenoFA$Sample)
+samplenamesO3=c(phenoO3$Sample)
+samplenamesM=c(pheno2M$Sample)
+samplenamesF=c(pheno2F$Sample)
+samplenamesFP=c(pheno2FP$Sample)
+samplenamesFnoP=c(pheno2FnoP$Sample)
+datawithID=read.csv("array2.csv")
+miRNAlist=datawithID[,1]
+miRNAlist=data.matrix(miRNAlist)
+colnames(CTvalues)=samplenames
+```
+
+{r summary and plots of Ct raw data}
+CTvaluesM=data.matrix(CTvalues)
+boxplot(CTvaluesM)
+summary(CTvaluesM)
+plotCtHeatmap(CTvaluesM, gene.names = miRNAlist, sample.names = pheno$Treatment, dist = "euclidean", "CT all cycles")
+plotCtHeatmap(CTvaluesM, gene.names = miRNAlist, dist = "euclidean", "CT all 
+
+```{r groups}
+FA=c(1,2,5,6,17,18,11,40,41,42,43,50,28,52,10,14,23,27,38,49,54,55,56,25,29,37,44,45,47)
+O3=c(3,4,7,8,9,19,20,21,24,33,51,34,39,53,16,22,26,30,31,32,36,46,48,12,13,15,35)
+pheno$Treatment[FA]
+pheno$Treatment[O3]
+
+FA_M=c(1,2,5,6,17,18)
+pheno$code[FA_M]
+O3_M=c(3,4,7,8,9,19,20,21)
+pheno$code[O3_M]
+
+FA_F=c(11,40,41,42,43,50,28,52,10,14,23,27,38,49,54,55,56,25,29,37,44,45,47)
+pheno$code[FA_F]
+O3_F=c(24,33,51,34,39,53,16,22,26,30,31,32,36,46,48,12,13,15,35)
+pheno$code[O3_F]
+
+
+FA_D1=c(11,40,42,43)
+pheno$code2[FA_D1]
+FA_D2=c(28,41,50,52)
+pheno$code2[FA_D2]
+FA_luteal=c(11,40,41,42,43,50,28,52)
+pheno$Phase[FA_luteal]
+FA_noP=c(11,40,41,42,43,50,28,52,25,29,37,44,45,47)
+pheno$code3[FA_noP]
+
+FA_P=c(10,14,23,27,38,49,54,55,56)
+pheno$code2[FA_P]
+FA_E=c(25,29,37,44,45,47)
+pheno$code2[FA_E]
+FA_follicular=c(10,14,23,27,38,49,54,55,56,25,29,37,44,45,47)
+pheno$Phase[FA_follicular]
+
+
+O3_D1=c(24,33,51)
+pheno$code2[O3_D1]
+O3_D2=c(34,39,53)
+pheno$code2[O3_D2]
+O3_luteal=c(24,33,51,34,39,53)
+pheno$Phase[O3_luteal]
+O3_noP=c(24,33,51,34,39,53,12,13,15,35)
+pheno$code3[O3_noP]
+
+O3_P=c(16,22,26,30,31,32,36,46,48)
+pheno$code2[O3_P]
+O3_E=c(12,13,15,35)
+pheno$code2[O3_E]
+O3_follicular=c(16,22,26,30,31,32,36,46,48,12,13,15,35)
+pheno$Phase[O3_follicular]
+```
+
+```{r}
+plot(hexplom(CTvaluesM[,FA_M]), main = "FA M")
+plot(hexplom(CTvaluesM[,O3_M]), main = "O3 M")
+
+plot(hexplom(CTvaluesM[,FA_F]), main = "FA F")
+plot(hexplom(CTvaluesM[,O3_F]), main = "O3 F")
+
+plot(hexplom(CTvaluesM[,FA_D1]), main = "FA D1")
+plot(hexplom(CTvaluesM[,O3_D1]), main = "O3 D1")
+
+plot(hexplom(CTvaluesM[,FA_D2]), main = "FA D2")
+plot(hexplom(CTvaluesM[,O3_D2]), main = "O3 D2")
+
+plot(hexplom(CTvaluesM[,FA_P]), main = "FA P")
+plot(hexplom(CTvaluesM[,O3_P]), main = "O3 P")
+
+plot(hexplom(CTvaluesM[,FA_E]), main = "FA E")
+plot(hexplom(CTvaluesM[,O3_E]), main = "O3 E")
+
+plot(hexplom(CTvaluesM[,FA_follicular]), main = "FA folLicular")
+plot(hexplom(CTvaluesM[,O3_follicular]), main = "O3 folLicular")
+
+plot(hexplom(CTvaluesM[,FA_luteal]), main = "FA luteal")
+plot(hexplom(CTvaluesM[,O3_luteal]), main = "O3 luteal")
+```
+
+```{r}
+Expvalues=read.csv("expression1noH.csv")
+colnames(Expvalues)=samplenames
+datawithID2=read.csv("expression1.csv")
+miRNAlist2=datawithID2[,1]
+rownames(Expvalues)=miRNAlist2
+ExpvaluesM=data.matrix(Expvalues)
+ExpvaluesL=log(ExpvaluesM)
+```
+
+```{r}
+Expvalues2=read.csv("expression1noH2.csv")
+colnames(Expvalues2)=samplenames2
+datawithID22=read.csv("expression1.csv")
+miRNAlist22=datawithID22[,1]
+rownames(Expvalues2)=miRNAlist22
+ExpvaluesM2=data.matrix(Expvalues2)
+ExpvaluesL2=log(ExpvaluesM2)
+```
+
+```{r}
+Expvalues3=read.csv("expression1noH23.csv")
+colnames(Expvalues3)=samplenames3
+datawithID23=read.csv("expression123.csv")
+miRNAlist23=datawithID23[,1]
+rownames(Expvalues3)=miRNAlist23
+ExpvaluesM3=data.matrix(Expvalues3)
+ExpvaluesL3=log(ExpvaluesM3)
+```
+
+```{r}
+ExpvaluesFA=read.csv("expressionFAnoH.csv")
+colnames(ExpvaluesFA)=samplenamesFA
+rownames(ExpvaluesFA)=miRNAlist23
+ExpvaluesFA=data.matrix(ExpvaluesFA)
+ExpvaluesFAL=log(ExpvaluesFA)
+```
+
+```{r}
+ExpvaluesO3=read.csv("expressionO3noH.csv")
+colnames(ExpvaluesO3)=samplenamesO3
+rownames(ExpvaluesO3)=miRNAlist23
+ExpvaluesO3=data.matrix(ExpvaluesO3)
+ExpvaluesO3L=log(ExpvaluesO3)
+```
+
+```{r}
+ExpvaluesMale=read.csv("expressionMalenoH.csv")
+colnames(ExpvaluesMale)=samplenamesM
+rownames(ExpvaluesMale)=miRNAlist23
+ExpvaluesMale=data.matrix(ExpvaluesMale)
+```
+
+```{r}
+ExpvaluesF=read.csv("expressionFnoH.csv")
+colnames(ExpvaluesF)=samplenamesF
+rownames(ExpvaluesF)=miRNAlist23
+ExpvaluesF=data.matrix(ExpvaluesF)
+```
+
+```{r}
+ExpvaluesFP=read.csv("expressionFPnoH.csv")
+colnames(ExpvaluesFP)=samplenamesFP
+rownames(ExpvaluesFP)=miRNAlist23
+ExpvaluesFP=data.matrix(ExpvaluesFP)
+```
+
+```{r}
+ExpvaluesFnoP=read.csv("expressionFnoPnoH.csv")
+colnames(ExpvaluesFnoP)=samplenamesFnoP
+rownames(ExpvaluesFnoP)=miRNAlist23
+ExpvaluesFnoP=data.matrix(ExpvaluesFnoP)
+
+ExpvaluesFnoPsel=read.csv("expressionFnoPselnoH.csv")
+datawithIDnoPsel=read.csv("expressionFnoPsel.csv")
+miRNAlistnoPsel=datawithIDnoPsel[,1]
+rownames(ExpvaluesFnoPsel)=miRNAlistnoPsel
+colnames(ExpvaluesFnoPsel)=samplenamesFnoP
+rownames(ExpvaluesFnoPsel)=miRNAlistnoPsel
+ExpvaluesFnoPsel=data.matrix(ExpvaluesFnoPsel)
+
+ExpvaluesFPsel=read.csv("expressionFPselnoH.csv")
+datawithIDPsel=read.csv("expressionFPsel.csv")
+miRNAlistPsel=datawithIDPsel[,1]
+rownames(ExpvaluesFPsel)=miRNAlistPsel
+colnames(ExpvaluesFPsel)=samplenamesFP
+rownames(ExpvaluesFPsel)=miRNAlistPsel
+ExpvaluesFPsel=data.matrix(ExpvaluesFPsel)
+```
+
+```{r visualize expression data}
+boxplot(Expvalues, main = "raw expression")
+boxplot(Expvalues[,FA], main = "FA")
+boxplot(Expvalues[,O3], main = "O3")
+boxplot(Expvalues[,FA_M], main = "FA M")
+boxplot(Expvalues[,O3_M], main = "O3 M")
+boxplot(Expvalues[,FA_F], main = "FA F")
+boxplot(Expvalues[,O3_F], main = "O3 F")
+```
+
+
+
+```{r}
+design=model.matrix(~0 + pheno$Treatment)
+colnames(design)=c("FA", "O3")
+rownames(design)=pheno$Sample
+print(design)
+```
+
+```{r}
+design1=model.matrix(~0 + pheno$code)
+colnames(design1)=c("FA_F", "FA_M", "O3_F", "O3_M")
+rownames(design1)=pheno$Sample
+print(design1)
+```
+
+```{r}
+design2=model.matrix(~0 + pheno$code2)
+colnames(design2)=c("FA_D1", "FA_D2","FA_P", "FA_M", "FA_E", "O3_D1", "O3_D2", "O3_P", "O3_M",  "O3_E")
+rownames(design2)=pheno$Sample
+print(design2)
+```
+
+```{r}
+design3=model.matrix(~0 + pheno$Phase)
+colnames(design3)=c("FA_follicular", "FA_luteal", "FA_male",  "O3_follicular", "O3_luteal", "O3_male")
+rownames(design3)=pheno$Sample
+print(design3)
+```
+
+```{r}
+design4=model.matrix(~0 + pheno$code3)
+colnames(design4)=c("FA_M","FA_noP", "FA_P","O3_M","O3_noP","O3_P")
+rownames(design4)=pheno$Sample
+print(design4)
+```
+
+
+CONTRASTS
+
+```{r contrasts}
+contrasts=makeContrasts(O3vFA=O3-FA,levels = design)
+contrasts1=makeContrasts(MvF_FA=FA_F-FA_M, MvF_O3=O3_F-O3_M,levels = design1)
+contrasts2=makeContrasts(FAvO3_M=O3_M-FA_M, FAvO3_F=O3_F-FA_F, levels = design1)
+contrasts3=makeContrasts(FAvO3_fol=O3_follicular-FA_follicular, FAvO3_lut=O3_luteal-FA_luteal, FAvO3_male=O3_male-FA_male, O3_folvslut=O3_luteal-O3_follicular, FA_folvslut=FA_luteal-FA_follicular, levels = design3)
+contrasts4=makeContrasts(FAvO3noP=O3_noP-FA_noP,FAvO3P=O3_P-FA_P, levels = design4)
+print(contrasts)
+print(contrasts1)
+print(contrasts2)
+print(contrasts3)
+print(contrasts4)
+```
+
+
+```{r}
+fit=lmFit(Expvalues,design)
+fit1=lmFit(Expvalues,design1)
+fit3=lmFit(Expvalues,design3)
+fit2=lmFit(Expvalues,design2)
+fit4=lmFit(Expvalues,design4)
+
+fitL=lmFit(ExpvaluesL,design)
+fit1L=lmFit(ExpvaluesL,design1)
+fit3L=lmFit(ExpvaluesL,design3)
+fit2L=lmFit(ExpvaluesL,design2)
+fit4L=lmFit(ExpvaluesL,design4)
+```
+
+```{r fit cell means with contrasts}
+fitcontrast=contrasts.fit(fit,contrasts)
+efitcontrast=eBayes(fitcontrast)
+
+fitcontrast1=contrasts.fit(fit1,contrasts1)
+efitcontrast1=eBayes(fitcontrast1)
+
+fitcontrast2=contrasts.fit(fit1,contrasts2)
+efitcontrast2=eBayes(fitcontrast2)
+
+fitcontrast3=contrasts.fit(fit3,contrasts3)
+efitcontrast3=eBayes(fitcontrast3)
+
+fitcontrast4=contrasts.fit(fit4,contrasts4)
+efitcontrast4=eBayes(fitcontrast4)
+
+fitcontrastL=contrasts.fit(fitL,contrasts)
+efitcontrastL=eBayes(fitcontrastL)
+
+fitcontrast1L=contrasts.fit(fit1L,contrasts1)
+efitcontrast1L=eBayes(fitcontrast1L)
+
+fitcontrast2L=contrasts.fit(fit1L,contrasts2)
+efitcontrast2L=eBayes(fitcontrast2L)
+
+fitcontrast3L=contrasts.fit(fit3L,contrasts3)
+efitcontrast3L=eBayes(fitcontrast3L)
+
+fitcontrast4L=contrasts.fit(fit4L,contrasts4)
+efitcontrast4L=eBayes(fitcontrast4L)
+```
+
+
+
+
+
+
+FA vs O3 top table
+
+```{r}
+FAvO3top=topTable(efitcontrast, coef = "O3vFA", adjust.method = "BH", p.value = 0.2, sort.by = "P")
+FAvO3top
+write.csv(FAvO3top, file = "O3vFA.csv")
+
+
+FAvO3top2=topTable(efitcontrast, coef = "O3vFA", n=7)
+FAvO3top2
+write.csv(FAvO3top2, file = "O3vFAall.csv")
+
+FAvO3topt=topTable(efitcontrast, coef = "O3vFA")
+FAvO3topt
+```
+
+
+
+male vs female FA top tables
+
+```{r}
+MvF_FA_top=topTable(efitcontrast1, coef = "MvF_FA", adjust.method = "BH", p.value = 0.2, sort.by = "P")
+MvF_FA_top
+
+MvF_FA_top2=topTable(efitcontrast1, coef = "MvF_FA", n=3)
+MvF_FA_top2
+write.csv(MvF_FA_top2, file = "MvF_FAall.csv")
+```
+
+
+male vs female O3 top tables 
+
+```{r}
+MvF_O3_top=topTable(efitcontrast1, coef = "MvF_O3", adjust.method = "BH", p.value = 0.2, sort.by = "P")
+MvF_O3_top
+write.csv(MvF_O3_top, file = "MvF_O3.csv")
+
+MvF_O3_top2=topTable(efitcontrast1, coef = "MvF_O3", n=20)
+MvF_O3_top2
+write.csv(MvF_O3_top2, file = "MvF_O3all.csv")
+```
+
+Graphs FOR FIGURES
+
+FIGURE 1
+
+
+
+ARRAY
+
+```{r}
+codeFA=phenoFA$sex
+codeFA2=phenoFA$code2
+colnames(ExpvaluesFA)=codeFA2
+par(mfrow=c(1,1))
+aheatmap(ExpvaluesFA, color = colorRampPalette(c("navy", "white", "firebrick3"))(50), scale="row", annColors = "Set2", Colv = NA, Rowv=NA, annLegend = TRUE, annCol = codeFA)
+```
+
+```{r}
+codeO3=phenoO3$sex
+codeO32=phenoO3$code2
+colnames(ExpvaluesO3)=codeO32
+par(mfrow=c(1,1))
+aheatmap(ExpvaluesO3, color = colorRampPalette(c("navy", "white", "firebrick3"))(50), scale="row", annColors = "Set2", Colv = NA, Rowv=NA, annLegend = TRUE, annCol = codeO3)
+```
+
+```{r}
+par(mfrow=c(2,3))
+boxplot(ExpvaluesFA[66,] ~ phenoFA$code, main = miRNAlist2[66], ylab = "expression", xlab ="p=0.031")
+boxplot(ExpvaluesFA[36,] ~ phenoFA$code, main = miRNAlist2[36], ylab = "expression", xlab ="p=0.047")
+```
+
+
+```{r}
+par(mfrow=c(2,3))
+boxplot(ExpvaluesO3[9,] ~ phenoO3$code, main = miRNAlist2[9], ylab = "expression",  xlab ="p=0.0004")
+boxplot(ExpvaluesO3[58,] ~ phenoO3$code, main = miRNAlist2[58], ylab = "expression", xlab ="p=0.0014")
+boxplot(ExpvaluesO3[14,] ~ phenoO3$code, main = miRNAlist2[14], ylab = "expression", xlab ="p=0.0023")
+boxplot(ExpvaluesO3[40,] ~ phenoO3$code, main = miRNAlist2[40], ylab = "expression", xlab ="p=0.0057")
+boxplot(ExpvaluesO3[23,] ~ phenoO3$code, main = miRNAlist2[23], ylab = "expression", xlab ="p=0.0096")
+boxplot(ExpvaluesO3[17,] ~ phenoO3$code, main = miRNAlist2[17], ylab = "expression", xlab ="p=0.0132")
+boxplot(ExpvaluesO3[55,] ~ phenoO3$code, main = miRNAlist2[55], ylab = "expression", xlab ="p=0.0151")
+boxplot(ExpvaluesO3[44,] ~ phenoO3$code, main = miRNAlist2[44], ylab = "expression", xlab ="p=0.0153")
+boxplot(ExpvaluesO3[22,] ~ phenoO3$code, main = miRNAlist2[22], ylab = "expression", xlab ="p=0.023")
+```
+
+
+males
+
+```{r}
+par(mfrow=c(2,2))
+boxplot(ExpvaluesMale[36,] ~ pheno2M$code, main = miRNAlist2[36], ylab = "expression",  xlab ="p=0.011")
+boxplot(ExpvaluesMale[58,] ~ pheno2M$code, main = miRNAlist2[58], ylab = "expression",  xlab ="p=0.015")
+boxplot(ExpvaluesMale[29,] ~ pheno2M$code, main = miRNAlist2[29], ylab = "expression",  xlab ="p=0.021")
+boxplot(ExpvaluesMale[72,] ~ pheno2M$code, main = miRNAlist2[72], ylab = "expression",  xlab ="p=0.029")
+boxplot(ExpvaluesMale[8,] ~ pheno2M$code, main = miRNAlist2[8], ylab = "expression",  xlab ="p=0.031")
+boxplot(ExpvaluesMale[14,] ~ pheno2M$code, main = miRNAlist2[14], ylab = "expression",  xlab ="p=0.037")
+boxplot(ExpvaluesMale[17,] ~ pheno2M$code, main = miRNAlist2[17], ylab = "expression",  xlab ="p=0.045")
+boxplot(ExpvaluesMale[9,] ~ pheno2M$code, main = miRNAlist2[9], ylab = "expression",  xlab ="p=0.049")
+```
+
+
+females
+
+```{r}
+par(mfrow=c(2,2))
+boxplot(ExpvaluesF[72,] ~ pheno2F$code, main = miRNAlist2[72], ylab = "expression",  xlab ="p=0.002")
+boxplot(ExpvaluesF[71,] ~ pheno2F$code, main = miRNAlist2[71], ylab = "expression",  xlab ="p=0.009")
+boxplot(ExpvaluesF[50,] ~ pheno2F$code, main = miRNAlist2[50], ylab = "expression",  xlab ="p=0.014")
+boxplot(ExpvaluesF[73,] ~ pheno2F$code, main = miRNAlist2[73], ylab = "expression",  xlab ="p=0.017")
+boxplot(ExpvaluesF[62,] ~ pheno2F$code, main = miRNAlist2[62], ylab = "expression",  xlab ="p=0.035")
+boxplot(ExpvaluesF[69,] ~ pheno2F$code, main = miRNAlist2[69], ylab = "expression",  xlab ="p=0.036")
+boxplot(ExpvaluesF[9,] ~ pheno2F$code, main = miRNAlist2[9], ylab = "expression",  xlab ="p=0.041")
+boxplot(ExpvaluesF[55,] ~ pheno2F$code, main = miRNAlist2[55], ylab = "expression",  xlab ="p=0.044")
+```
+
+
+NO P
+
+```{r}
+par(mfrow=c(2,3))
+boxplot(ExpvaluesFnoP[38,] ~ pheno2FnoP$code, main = miRNAlist2[38], ylab = "expression", xlab ="p=0.027")
+boxplot(ExpvaluesFnoP[54,] ~ pheno2FnoP$code, main = miRNAlist2[54], ylab = "expression", xlab ="p=0.039")
+```
+
+P
+
+```{r}
+par(mfrow=c(2,3))
+boxplot(ExpvaluesFP[71,] ~ pheno2FP$code2, main = miRNAlist2[71], ylab = "expression", xlab ="p=0.00015")
+boxplot(ExpvaluesFP[73,] ~ pheno2FP$code2, main = miRNAlist2[73], ylab = "expression", xlab ="p=0.00025")
+boxplot(ExpvaluesFP[35,] ~ pheno2FP$code2, main = miRNAlist2[35], ylab = "expression", xlab ="p=0.003")
+boxplot(ExpvaluesFP[26,] ~ pheno2FP$code2, main = miRNAlist2[26], ylab = "expression", xlab ="p=0.0055")
+boxplot(ExpvaluesFP[75,] ~ pheno2FP$code2, main = miRNAlist2[75], ylab = "expression", xlab ="p=0.0092")
+boxplot(ExpvaluesFP[72,] ~ pheno2FP$code2, main = miRNAlist2[72], ylab = "expression", xlab ="p=0.013")
+boxplot(ExpvaluesFP[9,] ~ pheno2FP$code2, main = miRNAlist2[9], ylab = "expression", xlab ="p=0.019")
+boxplot(ExpvaluesFP[32,] ~ pheno2FP$code2, main = miRNAlist2[32], ylab = "expression", xlab ="p=0.023")
+boxplot(ExpvaluesFP[11,] ~ pheno2FP$code2, main = miRNAlist2[11], ylab = "expression", xlab ="p=0.038")
+```
+
+
+
+FA vs O3 males  
+
+```{r}
+FAvO3_M_top=topTable(efitcontrast2, coef = "FAvO3_M", adjust.method = "BH", p.value = 0.2, sort.by = "P")
+FAvO3_M_top
+write.csv(FAvO3_M_top, file = "FAvO3_M.csv")
+
+FAvO3_M_top2=topTable(efitcontrast2, coef = "FAvO3_M", n=15)
+FAvO3_M_top2
+write.csv(FAvO3_M_top2, file = "FAvO3_Mall.csv")
+```
+
+FA vs O3 females 
+
+```{r}
+FAvO3_F_top=topTable(efitcontrast2, coef = "FAvO3_F", adjust.method = "BH", p.value = 0.2, sort.by = "P")
+FAvO3_F_top
+write.csv(FAvO3_F_top, file = "FAvO3_F.csv")
+
+FAvO3_F_top2=topTable(efitcontrast2, coef = "FAvO3_F", n=9)
+FAvO3_F_top2
+write.csv(FAvO3_F_top2, file = "FAvO3_Fall.csv")
+```
+
+
+```{r}
+boxplot(ExpvaluesM[9,] ~ pheno$code, main = miRNAlist2[9], ylab = "expression")
+```
+
+
+
+FA vs O3 in follicular and luteal phase
+
+```{r}
+topfolO3FA=toptable(efitcontrast3, coef = "FAvO3_fol", adjust.method = "BH", p.value = 0.2, sort.by = "P")
+topfolO3FA
+
+topfolO3FA2=toptable(efitcontrast3, coef = "FAvO3_fol", n=4)
+topfolO3FA2
+
+write.csv(topfolO3FA2, file = "topfolO3FAall.csv")
+
+
+
+toplutO3FA=toptable(efitcontrast3, coef = "FAvO3_lut", adjust.method = "BH", p.value = 0.2, sort.by = "P")
+toplutO3FA
+
+toplutO3FA2=toptable(efitcontrast3, coef = "FAvO3_lut",n=6)
+toplutO3FA2
+
+write.csv(toplutO3FA2, file = "toplutO3FAall.csv")
+
+
+
+topmaleO3FA=toptable(efitcontrast3, coef = "FAvO3_male", adjust.method = "BH", p.value = 0.2, sort.by = "P")
+topmaleO3FA
+
+topmaleO3FA2=toptable(efitcontrast3, coef = "FAvO3_male",n=14)
+topmaleO3FA2
+
+write.csv(topmaleO3FA2, file = "topmaleO3FAall.csv")
+```
+
+
+FA vs O3 in PROESTRUS
+
+```{r}
+topFAvO3noP=toptable(efitcontrast4, coef = "FAvO3noP", adjust.method = "BH", p.value = 0.5, sort.by = "P")
+topFAvO3noP
+
+write.csv(topFAvO3noP, file = "topFAvO3noP.csv")
+
+topFAvO3P=toptable(efitcontrast4, coef = "FAvO3P", adjust.method = "BH", p.value = 0.5, sort.by = "P")
+topFAvO3P
+write.csv(topFAvO3P, file = "topFAvO3P.csv")
+```
+
+raw expression FA vs ozone luteal phase
+
+```{r}
+boxplot(ExpvaluesL[71,] ~ pheno$code3, main = miRNAlist2[71], ylab = "expression")
+```
+
+
+
+Follicular vs. Luteal phase 
+
+```{r}
+topfollutO3=toptable(efitcontrast3, coef = "O3_folvslut", adjust.method = "BH", p.value = 0.2, sort.by = "P")
+topfollutO3
+
+topfollutO32=toptable(efitcontrast3, coef = "O3_folvslut", n=8)
+topfollutO32
+
+write.csv(topfollutO32, file = "topfollutO3all.csv")
+
+
+topfollutFA=toptable(efitcontrast3, coef = "FA_folvslut", adjust.method = "BH", p.value = 0.2, sort.by = "P")
+topfollutFA
+
+topfollutFA2=toptable(efitcontrast3, coef = "FA_folvslut", n=2)
+topfollutFA2
+
+write.csv(topfollutO32, file = "topfollutFAall.csv")
+
+```
+
+```{r}
+boxplot(ExpvaluesM[72,] ~ pheno$Phase, main = miRNAlist2[72], ylab = "expression")
+boxplot(ExpvaluesM[35,] ~ pheno$code, main = miRNAlist2[35], ylab = "expression")
+boxplot(ExpvaluesM[72,] ~ pheno$Treatment, main = miRNAlist2[72], ylab = "expression")
+```
+
+
+```{r}
+heatmap(ExpvaluesM,labRow = miRNAlist2, labCol = pheno$Treatment)
+heatmap(ExpvaluesM,labRow = miRNAlist2, labCol = pheno$code)
+heatmap(ExpvaluesM,labRow = miRNAlist2, labCol = pheno$Phase)
+heatmap(ExpvaluesM,labRow = miRNAlist2, labCol = pheno$code2)
+```
+
+```{r}
+heatmap(ExpvaluesL,labRow = miRNAlist2, labCol = pheno$Treatment)
+heatmap(ExpvaluesL,labRow = miRNAlist2, labCol = pheno$code)
+heatmap(ExpvaluesL,labRow = miRNAlist2, labCol = pheno$Phase)
+heatmap(ExpvaluesL,labRow = miRNAlist2, labCol = pheno$code2)
+```
+
+
+```{r}
+d1=dist(ExpvaluesM2, method = "euclidean", diag = FALSE, upper = FALSE)
+c1=hclust(d1, method = "ward.D2", members = NULL)
+ExpvaluesM2t=t(ExpvaluesM2)
+d2=dist(ExpvaluesM2t,method = "euclidean", diag = FALSE, upper = TRUE)
+c2=hclust(d2, method = "ward.D2", members = NULL)
+par(mfrow=c(2,1),cex=0.5)
+plot(c2); plot(c1) 
+my_palette <- colorRampPalette(c("blue","white","red"))(n = 50)
+par(cex.main=0.75)
+heatmap.2(ExpvaluesM2,trace="none", col=my_palette, labCol = pheno2$code, scale="row", Colv = NA)
+```
+
+```{r}
+if (!require("NMF")) {
+   install.packages("NMF", dependencies = TRUE)
+   library(NMF)
+}
+```
+
+
+```{r}
+codes=pheno2$code
+codes2=pheno2$code2
+colnames(ExpvaluesL2)=codes2
+par(mfrow=c(1,1))
+aheatmap(ExpvaluesL2[,1:14], color = colorRampPalette(c("navy", "white", "firebrick3"))(50), scale="row", annColors = "Set3", Colv = NA, Rowv=NA, annLegend = TRUE, annCol = pheno2$Treatment[1:14], border = T)
+aheatmap(ExpvaluesL2[,15:54], color = colorRampPalette(c("navy", "white", "firebrick3"))(50), scale="row", annColors = "Set3", Colv = NA, Rowv=NA, annCol = pheno2$Treatment[15:54], cexRow = 1, border = T)
+```
+
+color = rev(brewer.pal(9,"RdBu"))
+
+```{r}
+par(mfrow=c(1,1))
+codes3=pheno3$code2
+colnames(ExpvaluesL3)=codes3
+myt = data.frame(Treatment = pheno3$Treatment, Cycle = pheno3$Cycle)
+aheatmap(ExpvaluesL3, color = colorRampPalette(c("navy", "white", "firebrick"))(50), scale="row", Colv = NA, Rowv=NA, annCol = myt, border = T)
+```
+
+
+```{r}
+par(mfrow=c(1,1))
+codesFP=pheno2FP$code2
+colnames(ExpvaluesFPsel)=codesFP
+myt = data.frame(Treatment = pheno2FP$Treatment)
+aheatmap(ExpvaluesFPsel, color = colorRampPalette(c("navy", "white", "firebrick"))(50), scale="row", Colv = NA, Rowv=NA, annCol = myt,border = T)
+
+codesFnoP=pheno2FnoP$code2
+colnames(ExpvaluesFnoPsel)=codesFnoP
+myt = data.frame(Treatment = pheno2FnoP$Treatment)
+aheatmap(ExpvaluesFnoPsel, color = colorRampPalette(c("navy", "white", "firebrick3"))(50), scale="row", Colv = NA, Rowv=NA, annCol = myt, border = T)
+```
+
+
+aheatmap(ExpvaluesL3, color = rev(brewer.pal(9,"RdBu")), scale="row", annColors = "Set2", Colv = NA, Rowv=NA, annCol = pheno3$Cycle)
+
+```{r}
+heatmap.2(ExpvaluesFPsel,labRow = miRNAlistPsel, labCol = pheno2F$code2, scale="row", density.info="none", trace="none", col=brewer.pal(11,"RdBu"))
+```
+
+```{r}
+heatmap(ExpvaluesFPsel,labRow = miRNAlistPsel, labCol = pheno3$Treatment)
+heatmap(ExpvaluesL3,labRow = miRNAlist23, labCol = pheno3$code2)
+```
+
+
+
+```{r}
+sessionInfo()
+print(gc())
+```
+
+
+
+
+
+
+
+
+
+
+
+

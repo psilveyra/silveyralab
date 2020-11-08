@@ -1,0 +1,352 @@
+---
+title: "CF analysis"
+author: "Silveyra"
+date: "December 4, 2018"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+```{r}
+library(gage)
+require(gage)
+require(hexbin)
+require(limma)
+require(gplots)
+library(statmod)
+library(RColorBrewer)
+```
+
+
+```{r}
+setwd("~/Desktop/CF project")
+CTvalues=read.csv("ctvaluesCFnoH.csv")
+pheno=read.csv("phenomatrixCF.csv")
+samplenames=c(pheno$RID)
+expwithmiRNAid=read.csv("ctvaluesCF.csv")
+miRNAlist=expwithmiRNAid[,1]
+miRNAlist=data.matrix(miRNAlist)
+```
+
+```{r}
+CTvaluesM=data.matrix(CTvalues)
+colnames(CTvaluesM)=samplenames
+CTvaluesML=log(CTvaluesM)
+```
+
+```{r}
+boxplot(CTvaluesM)
+summary(CTvaluesM)
+```
+
+
+```{r}
+C=c(1,2,3,4,5,6,7,8,9)
+pheno$code[C]
+boxplot(CTvaluesM[,C], main = "Control CT values")
+
+S=c(10,11,13,14,15,18,19,21,25)
+pheno$code[S]
+boxplot(CTvaluesM[,S], main = "CF Staph CT values")
+
+P=c(12,16,17,20,22,23,24,26,27)
+pheno$code[P]
+boxplot(CTvaluesM[,P], main = "CF Pseudomonas CT values")
+```
+
+```{r}
+Expvalues=read.csv("expCFnoh.csv")
+ExpvaluesM=data.matrix(Expvalues)
+colnames(ExpvaluesM)=samplenames
+miRNAlist2=read.csv("expCF.csv")
+miRNAlist2=miRNAlist2[,1]
+summary(ExpvaluesM)
+```
+
+```{r}
+colnames(ExpvaluesM)=samplenames
+boxplot(ExpvaluesM)
+boxplot(ExpvaluesM[,C], main = "Control RQ expression")
+boxplot(ExpvaluesM[,S], main = "CF Staph RQ expression")
+boxplot(ExpvaluesM[,P], main = "CF Pseudomonas RQ expression")
+```
+
+
+```{r}
+designCF=model.matrix(~0 + pheno$code)
+colnames(designCF)=c("Control","CF_Pseudomonas","CF_Staph")
+rownames(designCF)=pheno$code
+print(designCF)
+```
+
+```{r}
+designCF2=model.matrix(~0 + pheno$Phenotype)
+colnames(designCF2)=c("control","CF")
+rownames(designCF2)=pheno$Phenotype
+print(designCF2)
+```
+
+
+```{r}
+contrastsCF=makeContrasts(CvP=Control-CF_Pseudomonas,CvS=Control-CF_Staph,PvS=CF_Pseudomonas-CF_Staph,levels=designCF)
+print(contrastsCF)
+
+contrastsCF2=makeContrasts(CvCF=control-CF,levels=designCF2)
+print(contrastsCF2)
+```
+
+```{r}
+ExpvaluesL=log(ExpvaluesM+0.25)
+```
+
+
+```{r}
+fitCF=lmFit(ExpvaluesM,designCF)
+fitCFl=lmFit(ExpvaluesL,designCF)
+fitCF2=lmFit(ExpvaluesM,designCF2)
+fitCF2l=lmFit(ExpvaluesL,designCF2)
+```
+
+```{r}
+fitCFcontrast=contrasts.fit(fitCF,contrastsCF)
+fitCFcontrast=eBayes(fitCFcontrast)
+fitCFcontrastl=contrasts.fit(fitCFl,contrastsCF)
+fitCFcontrastl=eBayes(fitCFcontrastl)
+fitCFcontrast2=contrasts.fit(fitCF2,contrastsCF2)
+fitCFcontrast2=eBayes(fitCFcontrast2)
+fitCFcontrast2l=contrasts.fit(fitCF2l,contrastsCF2)
+fitCFcontrast2l=eBayes(fitCFcontrast2l)
+```
+
+CONTROL VS CF
+
+
+```{r}
+CvCF=topTable(fitCFcontrast2, coef = "CvCF", adjust.method = "BH", genelist = miRNAlist2, p.value=1, n=7)
+CvCF
+volcanoplot(fitCFcontrast2,coef = "CvCF", highlight = 7)
+write.csv(CvCF, file = "CvCF.csv")
+```
+
+top 10
+
+```{r}
+par(mfrow=c(2, 3))
+boxplot(ExpvaluesM[273,] ~ pheno$Phenotype, main = miRNAlist2[273], ylab = "expression")
+boxplot(ExpvaluesM[7,] ~ pheno$Phenotype, main = miRNAlist2[7], ylab = "expression")
+boxplot(ExpvaluesM[11,] ~ pheno$Phenotype, main = miRNAlist2[11], ylab = "expression")
+boxplot(ExpvaluesM[25,] ~ pheno$Phenotype, main = miRNAlist2[25], ylab = "expression")
+boxplot(ExpvaluesM[116,] ~ pheno$Phenotype, main = miRNAlist2[116], ylab = "expression")
+boxplot(ExpvaluesM[269,] ~ pheno$Phenotype, main = miRNAlist2[269], ylab = "expression")
+boxplot(ExpvaluesM[223,] ~ pheno$Phenotype, main = miRNAlist2[223], ylab = "expression")
+boxplot(ExpvaluesM[305,] ~ pheno$Phenotype, main = miRNAlist2[305], ylab = "expression")
+boxplot(ExpvaluesM[100,] ~ pheno$Phenotype, main = miRNAlist2[100], ylab = "expression")
+```
+
+```{r}
+CvCFl=topTable(fitCFcontrast2l, coef = "CvCF", adjust.method = "BH", genelist = miRNAlist2, p.value=1, n=8)
+CvCFl
+volcanoplot(fitCFcontrast2l,coef = "CvCF", highlight = 8)
+write.csv(CvCFl, file = "CvCFl.csv")
+```
+
+
+CONTROL VS PSEUDOMONAS
+
+```{r}
+CvP=topTable(fitCFcontrast, coef = "CvP", adjust.method = "BH", p.value = 1, genelist = miRNAlist2, n=15)
+CvP
+volcanoplot(fitCFcontrast,coef = "CvP", highlight = 15)
+write.csv(CvP, file = "CvP.csv")
+```
+
+```{r}
+CvPl=topTable(fitCFcontrastl, coef = "CvP", adjust.method = "BH", p.value = 1, genelist = miRNAlist2, n=13)
+CvPl
+volcanoplot(fitCFcontrastl,coef = "CvP", highlight = 13)
+write.csv(CvPl, file = "CvPl.csv")
+```
+
+
+
+Boxplot of top 10 DE miRNAs 
+```{r}
+par(mfrow=c(2, 2))
+boxplot(ExpvaluesM[273,] ~ pheno$code, main = miRNAlist2[273], ylab = "expression")
+boxplot(ExpvaluesM[176,] ~ pheno$code, main = miRNAlist2[176], ylab = "expression")
+boxplot(ExpvaluesM[143,] ~ pheno$code, main = miRNAlist2[143], ylab = "expression")
+boxplot(ExpvaluesM[269,] ~ pheno$code, main = miRNAlist2[269], ylab = "expression")
+boxplot(ExpvaluesM[305,] ~ pheno$code, main = miRNAlist2[305], ylab = "expression")
+boxplot(ExpvaluesM[25,] ~ pheno$code, main = miRNAlist2[25], ylab = "expression")
+boxplot(ExpvaluesM[248,] ~ pheno$code, main = miRNAlist2[248], ylab = "expression")
+boxplot(ExpvaluesM[297,] ~ pheno$code, main = miRNAlist2[297], ylab = "expression")
+boxplot(ExpvaluesM[114,] ~ pheno$code, main = miRNAlist2[114], ylab = "expression")
+boxplot(ExpvaluesM[191,] ~ pheno$code, main = miRNAlist2[191], ylab = "expression")
+boxplot(ExpvaluesM[96,] ~ pheno$code, main = miRNAlist2[96], ylab = "expression")
+boxplot(ExpvaluesM[154,] ~ pheno$code, main = miRNAlist2[154], ylab = "expression")
+boxplot(ExpvaluesM[169,] ~ pheno$code, main = miRNAlist2[169], ylab = "expression")
+boxplot(ExpvaluesM[142,] ~ pheno$code, main = miRNAlist2[142], ylab = "expression")
+boxplot(ExpvaluesM[203,] ~ pheno$code, main = miRNAlist2[203], ylab = "expression")
+```
+
+CONTROL VS STAPH
+
+```{r}
+CvS=topTable(fitCFcontrast, coef = "CvS", adjust.method = "BH", genelist = miRNAlist2, n=6)
+CvS
+volcanoplot(fitCFcontrast,coef = "CvS", highlight = 6)
+write.csv(CvS, file = "CvS.csv")
+```
+
+```{r}
+CvSl=topTable(fitCFcontrastl, coef = "CvS", adjust.method = "BH", genelist = miRNAlist2, n=9)
+CvSl
+volcanoplot(fitCFcontrastl,coef = "CvS", highlight = 9)
+write.csv(CvSl, file = "CvSl.csv")
+```
+
+Boxplot of top DE miRNAs 
+```{r}
+par(mfrow=c(2, 2))
+boxplot(ExpvaluesM[299,] ~ pheno$code, main = miRNAlist2[299], ylab = "expression")
+boxplot(ExpvaluesM[160,] ~ pheno$code, main = miRNAlist2[160], ylab = "expression")
+boxplot(ExpvaluesM[11,] ~ pheno$code, main = miRNAlist2[11], ylab = "expression")
+boxplot(ExpvaluesM[7,] ~ pheno$code, main = miRNAlist2[7], ylab = "expression")
+boxplot(ExpvaluesM[35,] ~ pheno$code, main = miRNAlist2[35], ylab = "expression")
+boxplot(ExpvaluesM[140,] ~ pheno$code, main = miRNAlist2[140], ylab = "expression")
+boxplot(ExpvaluesM[118,] ~ pheno$code, main = miRNAlist2[118], ylab = "expression")
+boxplot(ExpvaluesM[100,] ~ pheno$code, main = miRNAlist2[100], ylab = "expression")
+boxplot(ExpvaluesM[282,] ~ pheno$code, main = miRNAlist2[282], ylab = "expression")
+boxplot(ExpvaluesM[183,] ~ pheno$code, main = miRNAlist2[183], ylab = "expression")
+boxplot(ExpvaluesM[295,] ~ pheno$code, main = miRNAlist2[295], ylab = "expression")
+```
+
+Pseudomonas VS STAPH
+
+```{r}
+PvS=topTable(fitCFcontrast, coef = "PvS", adjust.method = "BH", p.value = 1, genelist = miRNAlist2, n=38)
+PvS
+volcanoplot(fitCFcontrast,coef = "PvS", highlight = 38)
+write.csv(PvS, file = "PvS.csv")
+```
+
+```{r}
+PvSl=topTable(fitCFcontrastl, coef = "PvS", adjust.method = "BH", p.value = 1, genelist = miRNAlist2, n=32)
+PvSl
+volcanoplot(fitCFcontrastl,coef = "PvS", highlight = 32)
+write.csv(PvSl, file = "PvSl.csv")
+```
+
+Boxplot of top 38 DE miRNAs 
+```{r}
+par(mfrow=c(2, 2))
+boxplot(ExpvaluesM[176,] ~ pheno$code, main = miRNAlist2[176], ylab = "expression")
+boxplot(ExpvaluesM[203,] ~ pheno$code, main = miRNAlist2[203], ylab = "expression")
+boxplot(ExpvaluesM[167,] ~ pheno$code, main = miRNAlist2[167], ylab = "expression")
+boxplot(ExpvaluesM[148,] ~ pheno$code, main = miRNAlist2[148], ylab = "expression")
+boxplot(ExpvaluesM[142,] ~ pheno$code, main = miRNAlist2[142], ylab = "expression")
+boxplot(ExpvaluesM[169,] ~ pheno$code, main = miRNAlist2[169], ylab = "expression")
+boxplot(ExpvaluesM[114,] ~ pheno$code, main = miRNAlist2[114], ylab = "expression")
+boxplot(ExpvaluesM[212,] ~ pheno$code, main = miRNAlist2[212], ylab = "expression")
+boxplot(ExpvaluesM[125,] ~ pheno$code, main = miRNAlist2[125], ylab = "expression")
+boxplot(ExpvaluesM[189,] ~ pheno$code, main = miRNAlist2[189], ylab = "expression")
+boxplot(ExpvaluesM[160,] ~ pheno$code, main = miRNAlist2[160], ylab = "expression")
+boxplot(ExpvaluesM[183,] ~ pheno$code, main = miRNAlist2[183], ylab = "expression")
+boxplot(ExpvaluesM[248,] ~ pheno$code, main = miRNAlist2[248], ylab = "expression")
+boxplot(ExpvaluesM[299,] ~ pheno$code, main = miRNAlist2[299], ylab = "expression")
+boxplot(ExpvaluesM[158,] ~ pheno$code, main = miRNAlist2[158], ylab = "expression")
+boxplot(ExpvaluesM[297,] ~ pheno$code, main = miRNAlist2[297], ylab = "expression")
+boxplot(ExpvaluesM[179,] ~ pheno$code, main = miRNAlist2[179], ylab = "expression")
+boxplot(ExpvaluesM[143,] ~ pheno$code, main = miRNAlist2[143], ylab = "expression")
+boxplot(ExpvaluesM[279,] ~ pheno$code, main = miRNAlist2[279], ylab = "expression")
+boxplot(ExpvaluesM[214,] ~ pheno$code, main = miRNAlist2[214], ylab = "expression")
+boxplot(ExpvaluesM[104,] ~ pheno$code, main = miRNAlist2[104], ylab = "expression")
+boxplot(ExpvaluesM[219,] ~ pheno$code, main = miRNAlist2[219], ylab = "expression")
+boxplot(ExpvaluesM[164,] ~ pheno$code, main = miRNAlist2[164], ylab = "expression")
+boxplot(ExpvaluesM[209,] ~ pheno$code, main = miRNAlist2[209], ylab = "expression")
+boxplot(ExpvaluesM[178,] ~ pheno$code, main = miRNAlist2[178], ylab = "expression")
+boxplot(ExpvaluesM[211,] ~ pheno$code, main = miRNAlist2[211], ylab = "expression")
+boxplot(ExpvaluesM[137,] ~ pheno$code, main = miRNAlist2[137], ylab = "expression")
+boxplot(ExpvaluesM[180,] ~ pheno$code, main = miRNAlist2[180], ylab = "expression")
+boxplot(ExpvaluesM[172,] ~ pheno$code, main = miRNAlist2[172], ylab = "expression")
+boxplot(ExpvaluesM[149,] ~ pheno$code, main = miRNAlist2[149], ylab = "expression")
+boxplot(ExpvaluesM[154,] ~ pheno$code, main = miRNAlist2[154], ylab = "expression")
+boxplot(ExpvaluesM[191,] ~ pheno$code, main = miRNAlist2[191], ylab = "expression")
+boxplot(ExpvaluesM[20,] ~ pheno$code, main = miRNAlist2[20], ylab = "expression")
+boxplot(ExpvaluesM[175,] ~ pheno$code, main = miRNAlist2[175], ylab = "expression")
+boxplot(ExpvaluesM[144,] ~ pheno$code, main = miRNAlist2[144], ylab = "expression")
+boxplot(ExpvaluesM[302,] ~ pheno$code, main = miRNAlist2[302], ylab = "expression")
+boxplot(ExpvaluesM[159,] ~ pheno$code, main = miRNAlist2[159], ylab = "expression")
+boxplot(ExpvaluesM[145,] ~ pheno$code, main = miRNAlist2[145], ylab = "expression")
+boxplot(ExpvaluesM[140,] ~ pheno$code, main = miRNAlist2[140], ylab = "expression")
+boxplot(ExpvaluesM[137,] ~ pheno$code, main = miRNAlist2[137], ylab = "expression")
+boxplot(ExpvaluesM[253,] ~ pheno$code, main = miRNAlist2[253], ylab = "expression")
+boxplot(ExpvaluesM[273,] ~ pheno$code, main = miRNAlist2[273], ylab = "expression")
+boxplot(ExpvaluesM[305,] ~ pheno$code, main = miRNAlist2[305], ylab = "expression")
+boxplot(ExpvaluesM[77,] ~ pheno$code, main = miRNAlist2[77], ylab = "expression")
+boxplot(ExpvaluesM[132,] ~ pheno$code, main = miRNAlist2[132], ylab = "expression")
+boxplot(ExpvaluesM[118,] ~ pheno$code, main = miRNAlist2[118], ylab = "expression")
+boxplot(ExpvaluesM[217,] ~ pheno$code, main = miRNAlist2[217], ylab = "expression")
+```
+
+
+```{r}
+heatmap.2(ExpvaluesL,Rowv = T, Colv = F, labRow = miRNAlist, labCol = pheno$Phenotype, col = brewer.pal(3,"YlGnBu"), trace="none", main="miRNA expression", dendrogram = "none")
+```
+
+```{r}
+heatmap.2(ExpvaluesL,Rowv = T, Colv = T, labRow = miRNAlist, labCol = pheno$code, col = brewer.pal(6,"YlGnBu"), trace="none", main="miRNA expression", dendrogram = "col", cexRow = 0.2)
+```
+
+
+```{r}
+heatmap.2(ExpvaluesL,Rowv = T, Colv = T, labRow = miRNAlist, labCol = pheno$code, col = brewer.pal(6,"Blues"), trace = "none", main="miRNA expression", cexRow = 0.2, cexCol = 0.6)
+```
+
+
+heatmaps for CF vs PA
+```{r}
+DiffSample=CvPl[,1]
+pDiffSample=CvCFl[,1]
+TopExp=ExpvaluesM[DiffSample,]
+pTopExp=ExpvaluesM[pDiffSample,]
+TopExpE=data.matrix(TopExp)
+pTopExpE=data.matrix(pTopExp)
+colnames(TopExpE)=samplenames
+colnames(pTopExpE)=samplenames
+
+heatmap(pTopExpE,labRow = pDiffSample, labCol = pheno$Phenotype, col=brewer.pal(6,"Blues"), xlab = "sample", cexRow = 0.5)
+heatmap(TopExpE,labRow = DiffSample, labCol = pheno$code, col=brewer.pal(9,"Blues"), xlab = "sample", cexRow = 0.5)
+heatmap(pTopExpE,labRow = pDiffSample, labCol = pheno$Phenotype, col=brewer.pal(6,"Blues"), main = "Log miRNA Expression", xlab = "sample", cexRow = 0.5)
+heatmap(TopExpE,labRow = DiffSample, labCol = pheno$code, col=brewer.pal(9,"Blues"))
+
+heatmap.2(pTopExpE,as.dist(1-(cor(t(pTopExpE)))), labRow = pDiffSample, labCol = pheno$code, col=brewer.pal(6,"Blues"), trace="none", dendrogram = "column", main = "Log miRNA Expression", cexRow = 0.5)
+
+heatmap.2(TopExpE,as.dist(1-(cor(t(TopExpE)))), labRow = DiffSample, labCol = pheno$code, col=brewer.pal(6,"Blues"), trace="none", dendrogram = "column", main = "Log miRNA Expression", xlab = "sample", cexRow = 0.5)
+
+heatmap.2(TopExpE,as.dist(1-(cor(t(TopExpE)))), labRow = DiffSample, labCol = pheno$code, col=brewer.pal(6,"Blues"), trace="none", main = "Log miRNA Expression", xlab = "sample", cexRow = 0.5)
+
+heatmap(pTopExpE,as.dist(1-(cor(t(pTopExpE)))), labRow = pDiffSample, labCol = pheno$Phenotype, col=brewer.pal(6,"Blues"))
+heatmap(pTopExpE,as.dist(1-(cor(t(pTopExpE)))), labRow = pDiffSample, labCol = pheno$code, col=brewer.pal(6,"Blues"))
+
+heatmap(TopExpE,as.dist(1-(cor(t(TopExpE)))), labRow = DiffSample, labCol = pheno$Phenotype, col=brewer.pal(9,"YlGnBu"))
+heatmap(TopExpE[1:5,],as.dist(1-(cor(t(TopExpE)))), labRow = DiffSample, labCol = pheno$code, col=brewer.pal(6,"Blues"))
+```
+
+
+
+```{r}
+sessionInfo()
+print(gc())
+```
+
+
+
+
+
+
+
+
+
+
