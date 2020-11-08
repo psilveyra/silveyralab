@@ -32,7 +32,7 @@ Fuentes N, Cabello N, Nicoleau M, Chroneos Z, Silveyra P.
 
 [Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE123276) -
 [mRNA expression in lung tissue (raw data)](http://psilveyra.github.io/silveyralab/GA_RTPCR_Silveyra.xls). -
-[R code] 
+[R code](http://psilveyra.github.io/silveyralab/GA_RTPCR_Silveyra.xls/Array.Rmd)
 
 --
 
