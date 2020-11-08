@@ -23,7 +23,7 @@ Fesen K, Silveyra P, Fuentes N, Nicoleau M, Rivera L, Kitch D, Graff G, Siddaiah
 
 [Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE130159) -
 [miRNA expression in EBC (raw data)](http://psilveyra.github.io/silveyralab/CF_RTPCR_Silveyra.xls)  -
-[R code](http://psilveyra.github.io/silveyralab/GA_RTPCR_Silveyra.xls/BPDanalysisfinal.Rmd)
+[R code](http://psilveyra.github.io/silveyralab/GA_RTPCR_Silveyra.xls/CFanalysis.Rmd)
 
 --
 
