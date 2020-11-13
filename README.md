@@ -14,7 +14,7 @@ Oji-Mmuo CN, Siddaiah R, Montes DT, Pham M, Donnelly A, Fuentes N, Imamura-Kawas
 
 [Access GEO miRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?&acc=GSE156055) -
 [Access GEO mRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE156028)  -
-[R code](http://psilveyra.github.io/silveyralab/GA_RTPCR_Silveyra.xls/BPDanalysisfinal.Rmd). -
+[R code](http://psilveyra.github.io/silveyralab/GA_RTPCR_Silveyra.xls/BPDanalysisfinal.Rmd) -  
 [read-only pdf of paper](https://rdcu.be/caCWg)
 
 --
