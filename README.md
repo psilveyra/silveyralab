@@ -10,8 +10,9 @@ Here you will find information about our projects, protocols, and data analysis 
 ## Data repository
 
 Oji-Mmuo CN, Siddaiah R, Montes DT, Pham M, Donnelly A, Fuentes N, Imamura-Kawasawa Y, Howrylak JA, Thomas N, Silveyra P
-**"Tracheal aspirate transcriptomic and miRNA signatures of extreme premature birth with bronchopulmonary dysplasia".** [*Journal of Perinatology. 2020*](https://doi.org/10.1038/s41372-020-00868-9)
+**"Tracheal aspirate transcriptomic and miRNA signatures of extreme premature birth with bronchopulmonary dysplasia".** [*J Perinatol 2020 Nov 11*](https://www.nature.com/articles/s41372-020-00868-9)
 
+[full text available here](https://rdcu.be/caCWg)
 [Access GEO miRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?&acc=GSE156055) -
 [Access GEO mRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE156028)  -
 [R code](http://psilveyra.github.io/silveyralab/GA_RTPCR_Silveyra.xls/BPDanalysisfinal.Rmd)
