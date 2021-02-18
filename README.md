@@ -9,7 +9,15 @@ Here you will find information about our projects, protocols, and data analysis 
 ---------
 ## Data repository
 
-Oji-Mmuo CN, Siddaiah R, Montes DT, Pham M, Donnelly A, Fuentes N, Imamura-Kawasawa Y, Howrylak JA, Thomas N, Silveyra P
+Siddaiah R, Oji-Mmuo CN, Montes DT, Fuentes N, Donnelly A, Spear D, Silveyra P "Tracheal Aspirate miRNA Signatures in Preterm Infants with Severe Bronchopulmonary Dysplasia". Preprints 2021, 2021020165 (doi: 10.20944/preprints202102.0165.v1). 
+
+[Access GEO miRNA] https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165828 - 
+[R code] -
+[paper preprint pdf] -
+
+--
+
+Oji-Mmuo CN, Siddaiah R, Montes DT, Pham M, Spear D, Donnelly A, Fuentes N, Imamura-Kawasawa Y, Howrylak JA, Thomas N, Silveyra P
 **"Tracheal aspirate transcriptomic and miRNA signatures of extreme premature birth with bronchopulmonary dysplasia".** [*J Perinatol 2020 Nov 11*](https://www.nature.com/articles/s41372-020-00868-9)
 
 [Access GEO miRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?&acc=GSE156055) -
