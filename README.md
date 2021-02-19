@@ -22,7 +22,7 @@ Oji-Mmuo CN, Siddaiah R, Montes DT, Pham M, Spear D, Donnelly A, Fuentes N, Imam
 
 [Access GEO miRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?&acc=GSE156055) -
 [Access GEO mRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE156028)  -
-[R code](https://github.com/psilveyra/GA_RTPCR_Silveyra.xls/BPDanalysisfinal.Rmd) -  
+[R code](https://github.com/psilveyra/silveyralab/blob/master/BPDanalysisfinal.Rmd) -  
 [read-only pdf of paper](https://rdcu.be/caCWg)
 
 --
@@ -41,7 +41,7 @@ Fuentes N, Cabello N, Nicoleau M, Chroneos Z, Silveyra P.
 
 [Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE123276) -
 [mRNA expression in lung tissue (raw data)](http://psilveyra.github.io/silveyralab/GA_RTPCR_Silveyra.xls). -
-[R code](https://github.com/psilveyra/silveyralab/GA_RTPCR_Silveyra.xls/Array.Rmd)
+[R code](https://github.com/psilveyra/silveyralab/blob/master/Array.Rmd)
 
 --
 
