@@ -1,0 +1,99 @@
+---
+title: "BPD analysis mild moderate vs. severe updated"
+author: "Silveyra"
+date: "Jan 2021"
+output:
+  html_document: 
+    fig_caption: yes
+    theme: readable
+  pdf_document: default
+---
+
+```{r}
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("limma")
+```
+
+
+```{r}
+#require(hexbin)
+require(limma)
+```
+
+
+
+```{r}
+pheno=read.csv("group.csv")
+samplenames=c(pheno$RID)
+Expvalues=read.csv("expnoh.csv")
+ExpvaluesM=data.matrix(Expvalues)
+Expvalues2=read.csv("exp.csv")
+ExpvaluesM2=data.matrix(Expvalues)
+colnames(ExpvaluesM)=samplenames
+miRNAlist2=read.csv("exp.csv")
+miRNAlist2=miRNAlist2[,1]
+summary(ExpvaluesM)
+```
+
+
+```{r}
+designBPD=model.matrix(~0 + pheno$group)
+colnames(designBPD)=c("M","S")
+rownames(designBPD)=pheno$RID
+print(designBPD)
+```
+
+
+```{r contrasts}
+contrastsBPD=makeContrasts(MvS=S-M,levels=designBPD)
+print(contrastsBPD)
+```
+
+
+```{r}
+fitBPD=lmFit(ExpvaluesM,designBPD)
+fitBPDcontrast=contrasts.fit(fitBPD,contrastsBPD)
+fitBPDcontrast=eBayes(fitBPDcontrast)
+```
+
+
+Mild vs Severe BPD
+
+```{r}
+MvS=topTable(fitBPDcontrast, coef = "MvS", adjust = "BH", sort.by = "p", n=Inf, genelist = miRNAlist2)
+MvS
+write.csv(MvS,file = "MvS.csv")
+volcanoplot(fitBPDcontrast,coef = "MvS", style = "p-value", highlight = 25)
+abline(h=-log10(0.05), col="brown")
+```
+
+```{r}
+heatmap(ExpvaluesM,labRow = miRNAlist2, labCol = pheno$group)
+```
+
+```{r}
+aheatmap(ExpvaluesM, color = colorRampPalette(c("blue","white","red"))(20), scale="row", annColors = "Set1", Colv = NULL, Rowv= NULL, annLegend = TRUE, border_color = "black", annCol = pheno$diagnosis)
+```
+
+```{r}
+annotation = data.frame(Group = pheno$plot)
+aheatmap(ExpvaluesM, color = colorRampPalette(c("blue","white","red"))(20), scale="row", annColors = "Set1", Colv = NULL, Rowv= NULL, annLegend = TRUE, border_color = "black", annCol = annotation, labCol = pheno$diagnosis)
+```
+
+
+```{r}
+sessionInfo()
+print(gc())
+```
+
+
+
+
+
+
+
+
+
+
