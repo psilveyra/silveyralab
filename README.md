@@ -13,7 +13,7 @@ Siddaiah R, Oji-Mmuo CN, Montes DT, Fuentes N, Donnelly A, Spear D, Silveyra P "
 
 [Access GEO miRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165828) - 
 R code -
-[miRNA raw data] (https://github.com/psilveyra/silveyralab/blob/master/BPD_RTPCR_Silveyra.xls)
+[miRNA raw data](https://github.com/psilveyra/silveyralab/blob/master/BPD_RTPCR_Silveyra.xls)
 [paper preprint pdf](https://github.com/psilveyra/silveyralab/blob/master/preprints202102.0165.v1.pdf)
 
 --
