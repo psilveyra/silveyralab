@@ -9,7 +9,7 @@ Here you will find information about our projects, protocols, and data analysis 
 ---------
 ## Data repository
 
-Siddaiah R, Oji-Mmuo CN, Montes DT, Fuentes N, Donnelly A, Spear D, Silveyra P "Tracheal Aspirate miRNA Signatures in Preterm Infants with Severe Bronchopulmonary Dysplasia". Preprints 2021, 2021020165 (doi: 10.20944/preprints202102.0165.v1). 
+Siddaiah R, Oji-Mmuo CN, Montes DT, Fuentes N, Donnelly A, Spear D, Silveyra P **"Tracheal Aspirate miRNA Signatures in Preterm Infants with Severe Bronchopulmonary Dysplasia".** *Preprints 2021, 2021020165* (doi: 10.20944/preprints202102.0165.v1)
 
 [Access GEO miRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165828) - 
 [R code](https://github.com/psilveyra/silveyralab/blob/master/BPDmildmodvsSevere.Rmd) -
@@ -41,7 +41,7 @@ Fuentes N, Cabello N, Nicoleau M, Chroneos Z, Silveyra P.
 **"Modulation of the lung inflammatory response to ozone by the estrous cycle".** [*Physiol Rep. 2019 Mar;7(5):e14026*](https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.14026)
 
 [Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE123276) -
-[mRNA expression in lung tissue (raw data)](http://psilveyra.github.io/silveyralab/GA_RTPCR_Silveyra.xls). -
+[mRNA expression in lung tissue (raw data)](http://psilveyra.github.io/silveyralab/GA_RTPCR_Silveyra.xls) -
 [R code](https://github.com/psilveyra/silveyralab/blob/master/Array.Rmd)
 
 --
