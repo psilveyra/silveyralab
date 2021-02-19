@@ -12,8 +12,8 @@ Here you will find information about our projects, protocols, and data analysis 
 Siddaiah R, Oji-Mmuo CN, Montes DT, Fuentes N, Donnelly A, Spear D, Silveyra P **"Tracheal Aspirate miRNA Signatures in Preterm Infants with Severe Bronchopulmonary Dysplasia".** *Preprints 2021, 2021020165* (doi: 10.20944/preprints202102.0165.v1)
 
 [Access GEO miRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165828) - 
-[R code](https://github.com/psilveyra/silveyralab/blob/master/BPDmildmodvsSevere.Rmd) -
-[miRNA raw data](https://github.com/psilveyra/silveyralab/blob/master/BPD_RTPCR_Silveyra.xls) -
+[R code](https://github.com/psilveyra/silveyralab/blob/master/BPDmildmodvsSevere.Rmd) - 
+[miRNA raw data](https://github.com/psilveyra/silveyralab/blob/master/BPD_RTPCR_Silveyra.xls) - 
 [paper preprint pdf](https://github.com/psilveyra/silveyralab/blob/master/preprints202102.0165.v1.pdf)
 
 --
@@ -21,9 +21,9 @@ Siddaiah R, Oji-Mmuo CN, Montes DT, Fuentes N, Donnelly A, Spear D, Silveyra P *
 Oji-Mmuo CN, Siddaiah R, Montes DT, Pham M, Spear D, Donnelly A, Fuentes N, Imamura-Kawasawa Y, Howrylak JA, Thomas N, Silveyra P
 **"Tracheal aspirate transcriptomic and miRNA signatures of extreme premature birth with bronchopulmonary dysplasia".** [*J Perinatol 2020 Nov 11*](https://www.nature.com/articles/s41372-020-00868-9)
 
-[Access GEO miRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?&acc=GSE156055) -
-[Access GEO mRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE156028)  -
-[R code](https://github.com/psilveyra/silveyralab/blob/master/BPDanalysisfinal.Rmd) -  
+[Access GEO miRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?&acc=GSE156055) - 
+[Access GEO mRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE156028) - 
+[R code](https://github.com/psilveyra/silveyralab/blob/master/BPDanalysisfinal.Rmd) - 
 [read-only pdf of paper](https://rdcu.be/caCWg)
 
 --
@@ -31,8 +31,8 @@ Oji-Mmuo CN, Siddaiah R, Montes DT, Pham M, Spear D, Donnelly A, Fuentes N, Imam
 Fesen K, Silveyra P, Fuentes N, Nicoleau M, Rivera L, Kitch D, Graff G, Siddaiah R. 
 **"The Role of microRNAs in Chronic Pseudomonas Lung Infection in Cystic Fibrosis".** [*Respiratory Medicine 151 (2019) 133-138*](https://www.resmedjournal.com/article/S0954-6111(19)30133-7/fulltext)
 
-[Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE130159) -
-[miRNA expression in EBC (raw data)](http://psilveyra.github.io/silveyralab/CF_RTPCR_Silveyra.xls)  -
+[Access GEO](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE130159) - 
+[miRNA expression in EBC (raw data)](http://psilveyra.github.io/silveyralab/CF_RTPCR_Silveyra.xls) - 
 [R code](https://github.com/psilveyra/silveyralab/blob/master/CFanalysis.Rmd)
 
 --
