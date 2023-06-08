@@ -11,6 +11,11 @@ Here you will find information about our projects, protocols, and data analysis 
 ---------
 ## Data repository
 
+Dustin Rousselle's thesis data.
+[R code and analysis files] (https://github.com/psilveyra/dustin_thesis_data)
+
+---
+
 Siddaiah R, Oji-Mmuo CN, Montes DT, Fuentes N, Donnelly A, Spear D, Silveyra P **"Tracheal Aspirate miRNA Signatures in Preterm Infants with Severe Bronchopulmonary Dysplasia".** *Preprints 2021, 2021020165* (doi: 10.20944/preprints202102.0165.v1)
 
 [Access GEO miRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165828) - 
