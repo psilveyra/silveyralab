@@ -15,13 +15,19 @@ Here you will find information about our projects, protocols, and data analysis 
 [R code and analysis files](https://github.com/psilveyra/dustin_thesis_data)
 
 --
+Siddaiah R, Oji-Mmuo C, Aluquin VPR, Kawasawa YI, Donnelly A, Rousselle D, Fuentes N, Austin ED, Silveyra P. 
+**Multiomics endotyping of preterm infants with bronchopulmonary dysplasia and pulmonary hypertension-A pilot study.** [Pulm Circ. 2023 Apr 1;13(2):e12232](https://onlinelibrary.wiley.com/doi/10.1002/pul2.12232)
 
-Siddaiah R, Oji-Mmuo CN, Montes DT, Fuentes N, Donnelly A, Spear D, Silveyra P **"Tracheal Aspirate miRNA Signatures in Preterm Infants with Severe Bronchopulmonary Dysplasia".** *Preprints 2021, 2021020165* (doi: 10.20944/preprints202102.0165.v1)
+[Access GEO miRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE205138)
+[Access GEO mRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE156028)
+
+--
+
+Siddaiah R, Oji-Mmuo CN, Montes DT, Fuentes N, Donnelly A, Spear D, Silveyra P **"MicroRNA Signatures Associated with Bronchopulmonary Dysplasia Severity in Tracheal Aspirates of Preterm Infants".** [Biomedicines. 2021 Mar 5;9(3):257](https://www.mdpi.com/2227-9059/9/3/257)
 
 [Access GEO miRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165828) - 
 [R code](https://github.com/psilveyra/silveyralab/blob/master/BPDmildmodvsSevere.Rmd) - 
 [miRNA raw data](https://github.com/psilveyra/silveyralab/blob/master/BPD_RTPCR_Silveyra.xls) - 
-[paper preprint pdf](https://github.com/psilveyra/silveyralab/blob/master/preprints202102.0165.v1.pdf)
 
 --
 
@@ -31,7 +37,6 @@ Oji-Mmuo CN, Siddaiah R, Montes DT, Pham M, Spear D, Donnelly A, Fuentes N, Imam
 [Access GEO miRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?&acc=GSE156055) - 
 [Access GEO mRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE156028) - 
 [R code](https://github.com/psilveyra/silveyralab/blob/master/BPDanalysisfinal.Rmd) - 
-[read-only pdf of paper](https://rdcu.be/caCWg)
 
 --
 
