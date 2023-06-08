@@ -18,7 +18,7 @@ Here you will find information about our projects, protocols, and data analysis 
 Siddaiah R, Oji-Mmuo C, Aluquin VPR, Kawasawa YI, Donnelly A, Rousselle D, Fuentes N, Austin ED, Silveyra P. 
 **Multiomics endotyping of preterm infants with bronchopulmonary dysplasia and pulmonary hypertension-A pilot study.** [Pulm Circ. 2023 Apr 1;13(2):e12232](https://onlinelibrary.wiley.com/doi/10.1002/pul2.12232)
 
-[Access GEO miRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE205138)
+[Access GEO miRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE205138) - 
 [Access GEO mRNA](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE156028)
 
 --
