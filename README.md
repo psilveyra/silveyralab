@@ -13,6 +13,7 @@ Here you will find information about our projects, protocols, and data analysis 
 
 
 **Dustin Rousselle's thesis data**
+
 [R code and analysis files](https://github.com/psilveyra/dustin_thesis_data)
 
 
