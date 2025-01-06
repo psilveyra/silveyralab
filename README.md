@@ -13,6 +13,11 @@ Here you will find information about our projects, protocols, and data analysis 
 
 --
 
+Rousselle D, Silveyra P. Acute exposure to ozone affects circulating estradiol levels and gonadotropin gene expression in female mice. (under review)
+[R code and analysis files]
+
+--
+
 **Dustin Rousselle's thesis data**
 [R code and analysis files](https://github.com/psilveyra/dustin_thesis_data)
 
